@@ -110,6 +110,7 @@ private:
   void do_video_protocol_process(u32 sub_cmd_type,char *data,u32 len);
 
   struct _frame_info_t *frame;
+
 };
 
 

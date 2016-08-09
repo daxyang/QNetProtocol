@@ -7,11 +7,11 @@ INCLUDE =-I../QSlidingWindowConsume -I../QSlidingWindow
 .PHONY:clean
 
 libQNetProtocol.so:QNetClient.o QNetServer.o QNetTcpServer.o QAntProtocol.o
-	$(CC) -shared -fPIC -o libQNetProtocol.so QNetTcpServer.o QNetClient.o QNetServer.o  QAntProtocol.o -L/usr/local/lib -lqslidingwindow -lQSlidingWindowConsume
+	$(CC) -shared -fPIC -o libQNetProtocol.so QNetServer.o QNetClient.o QNetTcpServer.o  QAntProtocol.o -L/usr/local/lib -lQSlidingWindow -lQSlidingWindowConsume
 
 
 QNetTcpServer.o:QNetTcpServer.cpp QNetTcpServer.h net_protocol.h
-	$(CC) $(INCLUDE) -c QNetTcpServer.cpp QNetTcpServer.h net_protocol.h -L/usr/local/lib -lqslidingwindow -lQSlidingWindowConsume
+	$(CC) $(INCLUDE) -c QNetTcpServer.cpp QNetTcpServer.h net_protocol.h -L/usr/local/lib -lQSlidingWindow -lQSlidingWindowConsume
 
 QNetClient.o:QNetClient.cpp QNetClient.h net_protocol.h
 	$(CC) $(INCLUDE)  -c QNetClient.cpp QNetClient.h net_protocol.h

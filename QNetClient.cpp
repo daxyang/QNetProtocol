@@ -1,4 +1,4 @@
-#include "qnetclient.h"
+#include "QNetClient.h"
 
 QNetClient::QNetClient()
 {
@@ -18,7 +18,7 @@ QNetClient::QNetClient()
   append_cmd_link_node(NET_TCP_TYPE_VID);
   append_cmd_link_node(NET_TCP_TYPE_FILE);
   /*
-   * 新增通讯协议主命令
+   * 新增通讯协议主命令  添加二
    append_cmd_link_node(NET_TCP_TYPE_XXX);
    */
 
@@ -37,7 +37,7 @@ QNetClient::QNetClient()
   //接受缓冲区消费者--将从网络接受到的协议进行解析
   recv_consume = recv_sliding->consume_linklist_getConsume(RECV_USER);
 
-  //将回调函数初始化为空
+  //将回调函数初始化为空 添加三
   set_protocol_ack_callback(NET_TCP_TYPE_CTRL,NET_CTRL_HEART,NULL);
   set_protocol_ack_callback(NET_TCP_TYPE_CTRL,NET_CTRL_LOGIN,NULL);
   set_protocol_ack_callback(NET_TCP_TYPE_CTRL,NET_CTRL_LOGOUT,NULL);
@@ -48,7 +48,8 @@ QNetClient::QNetClient()
 }
 QNetClient::~QNetClient()
 {
-
+  free(recv_buffer);
+  free(send_buffer);
 }
 int QNetClient::connect_server(char *ip,int port)
 {
@@ -57,7 +58,7 @@ int QNetClient::connect_server(char *ip,int port)
   struct timeval timeout;
   int flags,res;
   unsigned long ul;
-  printf("connect to Ipcamera.\n\r");
+  printf("connect to server.\n\r");
 
 #ifdef __WIN32
   WORD sockVersion = MAKEWORD(2,2);
@@ -245,8 +246,13 @@ void QNetClient::append_subcmd_link_node(u16 cmd_type,u32 sub_cmd_type,void (*fu
       return;
   }
   else
+  {
     return;
+  }
 }
+/*
+ * 根据主命令和子命令查找子节点
+ */
 struct sub_cmd_link_t *QNetClient::search_subcmd_node(u16 cmd_type,u32 sub_cmd_type)
 {
   struct sub_cmd_link_t *head_subcmd = search_subcmd_head(cmd_type);
@@ -269,6 +275,9 @@ struct sub_cmd_link_t *QNetClient::search_subcmd_node(u16 cmd_type,u32 sub_cmd_t
     return p1;
   }
 }
+/*
+ * 根据主命令查找子节点的头
+ */
 struct sub_cmd_link_t *QNetClient::search_subcmd_head(u16 cmd_type)
 {
   struct cmd_link_t *p1;
@@ -291,7 +300,7 @@ struct sub_cmd_link_t *QNetClient::search_subcmd_head(u16 cmd_type)
     return NULL;
 }
 /*
- * 协议处理部份--生成命令包，添加到发送缓冲区中进行发送
+ * 协议处理部份--生成命令包，添加到发送缓冲区中进行发送 添加四
  */
 //主命令处理
 void QNetClient::main_cmd_process(u16 cmd_type,u32 sub_cmd_type,char *data,u32 len)
@@ -384,6 +393,12 @@ void QNetClient::do_video_protocol_process(u32 sub_cmd_type,char *data,u32 len)
 {
 
 }
+/*  添加五
+void QNetClient::do_xxx_protocol_process(u32 sub_cmd_type,char *data,u32 len)
+{
+
+}
+ */
 /*
  * 从网络接受到的协议进行相应的处理
  */
@@ -416,14 +431,14 @@ void *QNetClient::run_send_pthread(void *ptr)
     {
       struct timeval tv;
       tv.tv_sec = 0;
-      tv.tv_usec = 90000; //100mS
+      tv.tv_usec = 1000; //100mS
       do{
         //  pthread_yield_np();
           err = select(0,NULL,NULL,NULL,&tv);
         }while(err<0 && errno == EINTR);
 
       time_cnt++;
-      if(time_cnt >= 30)
+      if(time_cnt >= 30 * 90)
       {
         time_cnt = 0;
         time_t timep;
@@ -442,7 +457,7 @@ void *QNetClient::run_send_pthread(void *ptr)
         heart->ss = ptime->tm_sec;
         pthis->main_cmd_process(NET_TCP_TYPE_CTRL,NET_CTRL_HEART,buffer,len);
           //pthis->itimer_cnt = 0;
-       printf("heart:%d:%d:%d\n",heart->hh,heart->mm,heart->ss);
+       //printf("heart:%d:%d:%d\n",heart->hh,heart->mm,heart->ss);
     }
 
   }
@@ -455,6 +470,7 @@ void *QNetClient::run_send_pthread(void *ptr)
           pthread_yield();
   #endif
   }
+  free(buffer);
 }
 //发送协议线程建立函数
 void QNetClient::send_pthread_start()
@@ -529,6 +545,7 @@ void *QNetClient::run_treasmit_pthread(void *ptr)
               pthread_yield();
     #endif
   }
+  free(buffer);
 }
 //解析接受到的命令线程的建立函数
 void QNetClient::treasmit_pthread_start()
@@ -557,7 +574,7 @@ int QNetClient::WRITE(int sk, char *buf, int len)
 
   while (left > 0)
   {
-      if((ret = send(sk,&buf[pos], left,0))<0)
+      if((ret = send(sk,&buf[pos], left,0))<=0)
       {
           printf("write data failed!\n");
           return -1;
@@ -577,10 +594,18 @@ int QNetClient::READ(int sk, char *buf, int len)
 
   while (left > 0)
   {
-      if((ret = recv(sk,&buf[pos], left,0))<0)
+    ret = recv(sk,&buf[pos], left,0);
+      //if((ret = recv(sk,&buf[pos], left,0))<=0)
+      if(ret == -1)
       {
           printf("read data failed!ret,left: %d,%d,%s\n",ret,left,strerror(errno));
           return -1;
+
+      }
+      else if((ret < 0) && ((errno == EINTR) ||  \
+        (errno == EWOULDBLOCK) || (errno == EAGAIN)))
+      {
+        continue;
       }
 
       left -= ret;

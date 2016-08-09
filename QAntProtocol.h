@@ -2,6 +2,9 @@
 #define QANTPROTOCOL_H
 #include "net_protocol.h"
 #include "QSlidingWindow.h"
+#include "stdio.h"
+#include "dirent.h"
+#include "sys/stat.h"
 struct cmd_transmit_t
 {
     void *ptr;
@@ -27,6 +30,8 @@ private:
   QSlidingWindow *send_sliding;
   struct _frame_info_t *frame;
   //static QAntProtocol  *pthis;
+  FILE *file;
+  char path[1024];
 
 
 };

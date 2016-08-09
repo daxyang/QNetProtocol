@@ -6,6 +6,6 @@ int main()
   tcp_server->init();
   tcp_server->start();
   while(1)
-    pause();
+    sleep(10);
 
 }

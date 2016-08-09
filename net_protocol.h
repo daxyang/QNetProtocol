@@ -119,7 +119,7 @@ enum log_out_statue{
 typedef struct
 {
     u8 file_number;
-    char file[20][64];
+    char file[20][256];
     u16 Rev1;
     u16 Rev2;
 } app_net_file_ack_list;
@@ -133,20 +133,20 @@ typedef struct
 //文件路径(server)
 typedef struct
 {
-        u16 state;
-        u16 Rev1;
+  u16 state;
+  u16 Rev1;
 }app_net_file_ack_path;
 
 //*****开始读取文件(client)*****
 typedef struct
 {
-        char filename[1024];
-        u32 Rev1;
+  char filename[1024];
+  u32 Rev1;
 }app_net_file_start_read;
 //开始读取文件(server)
 typedef struct
 {
-        u32 file_len;
+  u32 file_len;
 }app_net_file_ack_start_read;
 //*****传送文件(client)*****
 typedef struct

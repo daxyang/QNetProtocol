@@ -15,10 +15,14 @@ private:
   int server_socket ;
   struct cmd_link_t *head_cmd_link;//主节点的头
   pthread_t server_pthread_id;
+  pthread_t sub_server_id;
 
 
 private:
   static void *run_server(void *ptr);
+  static void *run_sub_server(void *ptr);
+  void start_sub_server(int sk);
+  int sock_id;
 
 
 };

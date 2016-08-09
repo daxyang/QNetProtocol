@@ -63,6 +63,12 @@ QNetTcpServer::QNetTcpServer()
   append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filestart);
 
 }
+QNetTcpServer::~QNetTcpServer()
+{
+  free(ant_protocol);
+  free(send_buffer);
+  free(recv_buffer);
+}
 int QNetTcpServer::login(int sk)
 {
   int loginstate = -1;
@@ -113,7 +119,7 @@ void *QNetTcpServer::run_cmd_process(void *ptr)
   QNetTcpServer *pthis = (QNetTcpServer *)ptr;
   pthis->consume_recv->read_init();
   char *buffer = (char *)malloc(sizeof(char) * 2 * 1024 * 1024);
-  while(pthis->quite == 0)
+  while(pthis->quit == 0)
   {
     int len = pthis->consume_recv->read_data_to_buffer(buffer,0);
     if(len > 0)
@@ -136,7 +142,7 @@ void *QNetTcpServer::run_cmd_process(void *ptr)
       pthread_yield();
     #endif
   }
-  printf("cmd process thread quit!\n");
+  printf("cmd process thread quit:%d!\n",pthis->quit);
   free(buffer);
 }
 
@@ -149,35 +155,16 @@ void *QNetTcpServer::run_recv_cmd(void *ptr)
   printf("Reveive pthread start!\n");
   QNetTcpServer *pthis = (QNetTcpServer *)ptr;
 
-  while(pthis->quite == 0)
+  while(pthis->quit == 0)
   {
-
-    struct timeval tv;
-    tv.tv_sec = 5;
-    tv.tv_usec = 0;
-    fd_set set,rset;
-    FD_ZERO(&set);
-    FD_SET(pthis->socket,&set);
-
-    FD_ZERO(&rset);
-    FD_SET(pthis->socket,&rset);
-    int ret = select(pthis->socket + 1,NULL,&rset,NULL,&tv);
-
-    if(ret <= 0)
-    {
-        printf("select over timer! %d\n",getpid());
-        pthis->quite = 1;
-        usleep(500000);
-        return NULL;
-    }
-    printf("select ok\n");
     char *head_buffer = (char *)malloc(sizeof(char) * NET_HEAD_SIZE);
     app_net_head_pkg_t *head = (app_net_head_pkg_t *)head_buffer;
+
     int rlen = pthis->READ(pthis->socket,head_buffer,NET_HEAD_SIZE);
     if(rlen == -1)
     {
-      printf("read data len : 0\n");
-      pthis->quite = 1;
+      printf("read data len : 0_0\n");
+      pthis->quit = 1;
       usleep(500000);
       return NULL;
     }
@@ -188,10 +175,10 @@ void *QNetTcpServer::run_recv_cmd(void *ptr)
     rlen = pthis->READ(pthis->socket,data_buffer + NET_HEAD_SIZE,len - NET_HEAD_SIZE);
     if(rlen == -1)
     {
-      printf("read data len : 0\n");
-      pthis->quite = 1;
-      usleep(500000);
-      return NULL;
+      printf("read data len : 0_1\n");
+       pthis->quit = 1;
+       usleep(500000);
+       return NULL;
     }
     //将数据(含包头)写入接受缓冲区
     pthis->slidingwnd_recv->write_data_to_buffer(len,data_buffer,pthis->frame);
@@ -206,7 +193,7 @@ void *QNetTcpServer::run_recv_cmd(void *ptr)
       pthread_yield();
     #endif
   }
-  printf("recv pthread quit!\n");
+  printf("recv pthread quit:%d!\n",pthis->quit);
 }
 /*
  * 启动命令分析线程
@@ -269,16 +256,16 @@ void *QNetTcpServer::run_send_cmd(void *ptr)
   char *buffer = (char *)malloc(sizeof(char) * 1024 * 1024);
   pthis->consume_send->read_init();
 
-  while(pthis->quite == 0)
+  while(pthis->quit == 0)
   {
       //从发送缓冲区中读取命令进行发送
-    int len = pthis->consume_send->read_data_to_buffer(buffer,0);
+    int len = pthis->consume_send->read_data_to_buffer(buffer,0);  //使用非阻塞模式，可以使该线程在quit=1时退出
     if(len > 0)
     {
       pthis->WRITE(pthis->socket,buffer,len);
           //printf("send len:%d\n", len);
     }
-    usleep(10000);
+    //usleep(10000);
     #if defined(Q_OS_WIN32)
       usleep(1000);
     #elif defined(Q_OS_MACX)
@@ -288,13 +275,13 @@ void *QNetTcpServer::run_send_cmd(void *ptr)
       pthread_yield();
     #endif
   }
-  printf("send pthread quit!\n");
+  printf("send pthread quit:%d!\n",pthis->quit);
   free(buffer);
 }
 void QNetTcpServer::server_start(int sk)
 {
   socket = sk;
-
+  quit = 0;
   start_send();
   start_recv();
   start_treasmit();
@@ -492,14 +479,31 @@ int QNetTcpServer::WRITE(int sk, char *buf, int len)
 
   while (left > 0)
   {
-      if((ret = send(sk,&buf[pos], left,0))<0)
+    struct timeval tv;
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
+    fd_set wset;
+
+    FD_ZERO(&wset);
+    FD_SET(sk,&wset);
+    int ret = select(sk + 1,NULL,&wset,NULL,&tv);
+    if(ret <= 0)
+    {
+      printf("select recv over timer! %d\n",getpid());
+      quit = 1;
+      usleep(500000);
+      return NULL;
+    }
+    if(FD_ISSET(sk,&wset))
+    {
+      if((ret = send(sk,&buf[pos], left,0))<=0)
       {
           printf("write data failed!\n");
           return -1;
       }
-
-      left -= ret;
-      pos += ret;
+    }
+    left -= ret;
+    pos += ret;
   }
 
   return 0;
@@ -512,14 +516,32 @@ int QNetTcpServer::READ(int sk, char *buf, int len)
 
   while (left > 0)
   {
+    struct timeval tv;
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
+    fd_set rset;
+
+    FD_ZERO(&rset);
+    FD_SET(sk,&rset);
+    int ret = select(sk + 1,&rset,NULL,NULL,&tv);
+    if(ret <= 0)
+    {
+      printf("select recv over timer! %d\n",getpid());
+      quit = 1;
+      usleep(500000);
+      return NULL;
+    }
+    if(FD_ISSET(sk,&rset))
+    {
       if((ret = recv(sk,&buf[pos], left,0))<=0)
       {
-          printf("read data failed!ret,left: %d,%d,%s\n",ret,left,strerror(errno));
-          return -1;
+        printf("read data failed!ret,left: %d,%d,%s\n",ret,left,strerror(errno));
+        return -1;
       }
+    }
 
-      left -= ret;
-      pos += ret;
+    left -= ret;
+    pos += ret;
   }
 
   return 0;

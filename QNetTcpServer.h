@@ -31,10 +31,11 @@ class QNetTcpServer:public QAntProtocol
 {
 public:
   QNetTcpServer();
+  ~QNetTcpServer();
 
   int login(int sk);
   void server_start(int sk);
-
+  int quit;
 protected:
 
 
@@ -43,7 +44,7 @@ private:
   static void *run_send_cmd(void *ptr);
   static void *run_cmd_process(void *ptr);
   int socket;
-  int quite;
+
 
   QSlidingWindow *slidingwnd_recv,*slidingwnd_send;
   QSlidingWindowConsume  *consume_recv,*consume_send;
