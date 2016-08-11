@@ -45,6 +45,7 @@ QNetClient::QNetClient()
   set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_SEND,NULL);
   set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_PATH,NULL);
   set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_LIST,NULL);
+
 }
 QNetClient::~QNetClient()
 {
@@ -419,7 +420,7 @@ void *QNetClient::run_send_pthread(void *ptr)
   char *buffer = (char *)malloc(sizeof(char) * PROTOCOL_BUFFER_LEN);
   int time_cnt = 0;
   int err;
-  while(1)
+  while(pthis->quit == 0)
   {
     int len = pthis->send_consume->read_data_to_buffer(buffer,0);  //使用非阻塞模式读数据
     if(len > 0)
@@ -457,18 +458,18 @@ void *QNetClient::run_send_pthread(void *ptr)
         heart->ss = ptime->tm_sec;
         pthis->main_cmd_process(NET_TCP_TYPE_CTRL,NET_CTRL_HEART,buffer,len);
           //pthis->itimer_cnt = 0;
-       //printf("heart:%d:%d:%d\n",heart->hh,heart->mm,heart->ss);
+        printf("heart:%d:%d:%d\n",heart->hh,heart->mm,heart->ss);
     }
 
   }
-  #if defined(Q_OS_WIN32)
-          usleep(1000);
-  #elif defined(Q_OS_MACX)
-          pthread_yield_np();
-  #elif defined(Q_OS_UNIX)
-        //  usleep(5000);
-          pthread_yield();
-  #endif
+  // #if defined(Q_OS_WIN32)
+  //         usleep(1000);
+  // #elif defined(Q_OS_MACX)
+  //         pthread_yield_np();
+  // #elif defined(Q_OS_UNIX)
+  //       //  usleep(5000);
+  //         pthread_yield();
+  // #endif
   }
   free(buffer);
 }
@@ -485,7 +486,7 @@ void QNetClient::send_pthread_start()
 void *QNetClient::run_recv_pthread(void *ptr)
 {
   QNetClient *pthis = (QNetClient *)ptr;
-  while(1)
+  while(pthis->quit == 0)
   {
     char *head_buffer = (char *)malloc(sizeof(char) * NET_HEAD_SIZE);
     app_net_head_pkg_t *head = (app_net_head_pkg_t *)head_buffer;
@@ -495,14 +496,14 @@ void *QNetClient::run_recv_pthread(void *ptr)
     pthis->READ(pthis->client_socket,(buffer+NET_HEAD_SIZE),len - NET_HEAD_SIZE);
     memcpy(buffer,head_buffer,NET_HEAD_SIZE);
     pthis->recv_sliding->write_data_to_buffer(len,buffer,pthis->frame);
-    #if defined(Q_OS_WIN32)
-              usleep(1000);
-    #elif defined(Q_OS_MACX)
-              pthread_yield_np();
-    #elif defined(Q_OS_UNIX)
-            //  usleep(5000);
-              pthread_yield();
-    #endif
+    // #if defined(Q_OS_WIN32)
+    //           usleep(1000);
+    // #elif defined(Q_OS_MACX)
+    //           pthread_yield_np();
+    // #elif defined(Q_OS_UNIX)
+    //         //  usleep(5000);
+    //           pthread_yield();
+    // #endif
     free(head_buffer);
     free(buffer);
   }
@@ -522,7 +523,7 @@ void *QNetClient::run_treasmit_pthread(void *ptr)
   QNetClient *pthis = (QNetClient *)ptr;
   pthis->recv_consume->read_init();
   char *buffer = (char *)malloc(sizeof(char) * PROTOCOL_BUFFER_LEN);
-  while(1)
+  while(pthis->quit == 0)
   {
     int len = pthis->recv_consume->read_data_to_buffer(buffer);
     if(len > 0)
@@ -536,14 +537,14 @@ void *QNetClient::run_treasmit_pthread(void *ptr)
       if(subcmd_node->callback != NULL)
           subcmd_node->callback(buffer+NET_HEAD_SIZE,len - NET_HEAD_SIZE);
     }
-    #if defined(Q_OS_WIN32)
-              usleep(1000);
-    #elif defined(Q_OS_MACX)
-              pthread_yield_np();
-    #elif defined(Q_OS_UNIX)
-            //  usleep(5000);
-              pthread_yield();
-    #endif
+    // #if defined(Q_OS_WIN32)
+    //           usleep(1000);
+    // #elif defined(Q_OS_MACX)
+    //           pthread_yield_np();
+    // #elif defined(Q_OS_UNIX)
+    //         //  usleep(5000);
+    //           pthread_yield();
+    // #endif
   }
   free(buffer);
 }
@@ -559,9 +560,14 @@ void QNetClient::treasmit_pthread_start()
 
 void QNetClient::start()
 {
+  signal(SIGPIPE,reply);
+  quit = 0;
+
+  treasmit_pthread_start();
   send_pthread_start();
   recv_pthread_start();
-  treasmit_pthread_start();
+
+
 }
 /*
  * 网络处理函数 发送和接受
@@ -577,6 +583,7 @@ int QNetClient::WRITE(int sk, char *buf, int len)
       if((ret = send(sk,&buf[pos], left,0))<=0)
       {
           printf("write data failed!\n");
+          quit = 1;
           return -1;
       }
 
@@ -599,6 +606,7 @@ int QNetClient::READ(int sk, char *buf, int len)
       if(ret == -1)
       {
           printf("read data failed!ret,left: %d,%d,%s\n",ret,left,strerror(errno));
+          quit = 1;
           return -1;
 
       }

@@ -185,6 +185,13 @@ void main_menu()
     break;
   }
 }
+void close_socket(int sig)
+{
+    client->quit = 1;
+    printf("\033[31mClose client\033[0\n");
+    free(client);
+    exit(0);
+}
 int main(int argc,char **argv)
 {
   client = new QNetClient();
@@ -194,6 +201,7 @@ int main(int argc,char **argv)
   client->set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_SEND,filesend_ack);
   client->set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_PATH,filepath_ack);
   client->set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_START,filestart_ack);
+  client->reply = close_socket;
   file_serial = 0;
   connect();
   usleep(100000);

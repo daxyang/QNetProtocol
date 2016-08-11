@@ -37,6 +37,8 @@ public:
 
   void start();
   void close_client();
+  void (*reply)(int sig);
+  int quit;
 private:
   /*  Send_Window（发送缓冲区):
    *      用户将协议添加到SendWindow中，发送线程通过网络进行发送

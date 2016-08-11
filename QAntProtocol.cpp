@@ -9,13 +9,12 @@ QAntProtocol::QAntProtocol(QSlidingWindow *sliding)
 {
   frame = new _frame_info_t;
   frame->frame_type = 20;
-  printf("sliding start\n");
   if(sliding == NULL)
     printf("sliding is null\n");
   else
   {
     send_sliding = sliding;
-    printf("send_sliding:%d,sliding:%d\n",send_sliding,sliding);
+    //printf("send_sliding:%d,sliding:%d\n",send_sliding,sliding);
   }
 
 //  pthis = this;
@@ -50,7 +49,7 @@ void QAntProtocol::ctrl_heart_ack(void *ptr)
   u32 len = (u32)cmd_ptr->len; //按受到协议的长度
 
   app_net_ctrl_heart *heart = (app_net_ctrl_heart *)data;
-  printf("pid:%d heart time:%d-%d-%d %d:%d:%d\n",getpid(),ntohs(heart->yy),heart->MM,heart->dd,heart->hh,heart->mm,heart->ss);
+  printf("heart time:%d-%d-%d %d:%d:%d\n",ntohs(heart->yy),heart->MM,heart->dd,heart->hh,heart->mm,heart->ss);
   //int time_cnt = 0;
   u32 pkg_len = NET_HEAD_SIZE + sizeof(app_net_ctrl_ack_heart);
   char *buffer = (char *)malloc(sizeof(char) * pkg_len);
@@ -58,7 +57,6 @@ void QAntProtocol::ctrl_heart_ack(void *ptr)
   app_net_ctrl_ack_heart *heart_ack = (app_net_ctrl_ack_heart *)(buffer + NET_HEAD_SIZE);
 
   heart_ack->state = 1;
-  printf("heart\n");
   HEAD_PKG(head,NET_TCP_TYPE_CTRL,NET_CTRL_HEART,0,pkg_len);
   pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
   free(buffer);
@@ -86,7 +84,6 @@ void QAntProtocol::file_list_ack(void *ptr)
   DIR *dir;
   struct dirent *dir_ptr;
   struct stat statbuf;
-  printf("1_path:%s\n",pthis->path);
   dir = opendir(pthis->path);
   printf("path:%s\n",pthis->path);
   if(dir != NULL)

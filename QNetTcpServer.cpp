@@ -62,12 +62,48 @@ QNetTcpServer::QNetTcpServer()
   sub_cmd_filestart->next = NULL;
   append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filestart);
 
+  frame = new _frame_info_t;
+  frame->frame_type = 20;
+
+  slidingwnd_send = new QSlidingWindow();
+  send_buffer = (char *)malloc(sizeof(char) * CMD_BUFFER_LEN);
+  if(send_buffer == NULL)
+  {
+    printf("send buffer is NULL\n");
+    return;
+  }
+  slidingwnd_send->sliding_init(CMD_BUFFER_LEN,send_buffer);
+  slidingwnd_send->consume_linklist_append(SEND_USER);
+  consume_send = slidingwnd_send->consume_linklist_getConsume(SEND_USER);
+
+  slidingwnd_recv = new QSlidingWindow();
+  recv_buffer = (char *)malloc(sizeof(char) * CMD_BUFFER_LEN);
+  if(recv_buffer == NULL)
+  {
+    printf("recv buff is NULL\n");
+    return;
+  }
+  slidingwnd_recv->sliding_init(CMD_BUFFER_LEN,recv_buffer);
+  slidingwnd_recv->consume_linklist_append(RECV_USER);
+  consume_recv = slidingwnd_recv->consume_linklist_getConsume(RECV_USER);
+
+  ant_protocol = new QAntProtocol(slidingwnd_send);
+
 }
 QNetTcpServer::~QNetTcpServer()
 {
-  free(ant_protocol);
+  delete slidingwnd_recv;
+  delete slidingwnd_send;
+  delete consume_recv;
+  delete consume_send;
+  delete ant_protocol;
   free(send_buffer);
   free(recv_buffer);
+  printf("free ant_protocol:%d\n",socket);
+  printf("free send_buffer:%d\n",socket);
+  printf("free recv_buffer:%d\n",socket);
+  send_buffer = NULL;
+  recv_buffer = NULL;
 }
 int QNetTcpServer::login(int sk)
 {
@@ -76,7 +112,12 @@ int QNetTcpServer::login(int sk)
   char *buffer = (char *)malloc(sizeof(char) * len);
   app_net_head_pkg_t *head = (app_net_head_pkg_t *)buffer;
   app_net_ctrl_login *login = (app_net_ctrl_login *)(buffer + NET_HEAD_SIZE);
-  READ(sk,buffer,len);
+  int ret = READ(sk,buffer,len);
+  if(ret == -1)
+  {
+    free(buffer);
+    return -1;
+  }
   u16 cmdtype = ntohs(head->CmdType);
   u32 cmdsubtype = ntohl(head->CmdSubType);
 
@@ -102,9 +143,6 @@ int QNetTcpServer::login(int sk)
     loginstate = -1;
   HEAD_PKG(head,NET_TCP_TYPE_CTRL,NET_CTRL_LOGIN,0,ack_len);
   WRITE(sk,buffer_ack,ack_len);
-  printf("---------------------------------\n");
-  printf("login:%d\n",loginstate);
-  printf("---------------------------------\n");
   free(buffer);
   free(buffer_ack);
   return loginstate;
@@ -132,15 +170,15 @@ void *QNetTcpServer::run_cmd_process(void *ptr)
       //将数据进行分析(不含头)
       pthis->do_cmd_process(cmd_type,cmd_sub_type,pkg_len,buffer+NET_HEAD_SIZE);
     }
-    usleep(10000);
-    #if defined(Q_OS_WIN32)
-      usleep(1000);
-    #elif defined(Q_OS_MACX)
-      pthread_yield_np();
-    #elif defined(Q_OS_UNIX)
-      //usleep(5000);
-      pthread_yield();
-    #endif
+    // usleep(10000);
+    // #if defined(Q_OS_WIN32)
+    //   usleep(1000);
+    // #elif defined(Q_OS_MACX)
+    //   pthread_yield_np();
+    // #elif defined(Q_OS_UNIX)
+    //   //usleep(5000);
+    //   pthread_yield();
+    // #endif
   }
   printf("cmd process thread quit:%d!\n",pthis->quit);
   free(buffer);
@@ -185,13 +223,13 @@ void *QNetTcpServer::run_recv_cmd(void *ptr)
     free(head_buffer);
     free(data_buffer);
 
-    #if defined(Q_OS_WIN32)
-      usleep(1000);
-    #elif defined(Q_OS_MACX)
-      pthread_yield_np();
-    #elif defined(Q_OS_UNIX)
-      pthread_yield();
-    #endif
+    // #if defined(Q_OS_WIN32)
+    //   usleep(1000);
+    // #elif defined(Q_OS_MACX)
+    //   pthread_yield_np();
+    // #elif defined(Q_OS_UNIX)
+    //   pthread_yield();
+    // #endif
   }
   printf("recv pthread quit:%d!\n",pthis->quit);
 }
@@ -211,17 +249,6 @@ void QNetTcpServer::start_treasmit()
  */
 void QNetTcpServer::start_recv()
 {
-
-  slidingwnd_recv = new QSlidingWindow();
-  recv_buffer = (char *)malloc(sizeof(char) * CMD_BUFFER_LEN);
-
-  slidingwnd_recv->sliding_init(CMD_BUFFER_LEN,recv_buffer);
-  slidingwnd_recv->consume_linklist_append(RECV_USER);
-  consume_recv = slidingwnd_recv->consume_linklist_getConsume(RECV_USER);
-
-  frame = new _frame_info_t;
-  frame->frame_type = 20;
-
   pthread_attr_t attr;
   pthread_attr_init (&attr);
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
@@ -235,13 +262,6 @@ void QNetTcpServer::start_recv()
  */
 void QNetTcpServer::start_send()
 {
-    slidingwnd_send = new QSlidingWindow();
-    send_buffer = (char *)malloc(sizeof(char) * CMD_BUFFER_LEN);
-
-    slidingwnd_send->sliding_init(CMD_BUFFER_LEN,send_buffer);
-    slidingwnd_send->consume_linklist_append(SEND_USER);
-    consume_send = slidingwnd_send->consume_linklist_getConsume(SEND_USER);
-
     pthread_attr_t attr;
     pthread_attr_init (&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
@@ -266,14 +286,14 @@ void *QNetTcpServer::run_send_cmd(void *ptr)
           //printf("send len:%d\n", len);
     }
     //usleep(10000);
-    #if defined(Q_OS_WIN32)
-      usleep(1000);
-    #elif defined(Q_OS_MACX)
-      pthread_yield_np();
-    #elif defined(Q_OS_UNIX)
-      //usleep(5000);
-      pthread_yield();
-    #endif
+    // #if defined(Q_OS_WIN32)
+    //   usleep(1000);
+    // #elif defined(Q_OS_MACX)
+    //   pthread_yield_np();
+    // #elif defined(Q_OS_UNIX)
+    //   //usleep(5000);
+    //   pthread_yield();
+    // #endif
   }
   printf("send pthread quit:%d!\n",pthis->quit);
   free(buffer);
@@ -283,9 +303,10 @@ void QNetTcpServer::server_start(int sk)
   socket = sk;
   quit = 0;
   start_send();
-  start_recv();
   start_treasmit();
-  ant_protocol = new QAntProtocol(slidingwnd_send);
+  start_recv();
+  //usleep(100000);
+
 }
 
 /*  添加通讯协议(2)
@@ -335,7 +356,7 @@ void QNetTcpServer::do_ctrl_process(u32 cmdsubtype,u32 len,char *data)
   case NET_CTRL_HEART:
   {
     struct sub_cmd_link_t *heart = search_subcmd_node(NET_TCP_TYPE_CTRL,NET_CTRL_HEART);
-    printf("NET_CTRL_HEART:%d\n",getpid());
+    printf("NET_CTRL_HEART:%d ",socket);
     heart->callback(&cmd);
   }
   break;
@@ -489,10 +510,10 @@ int QNetTcpServer::WRITE(int sk, char *buf, int len)
     int ret = select(sk + 1,NULL,&wset,NULL,&tv);
     if(ret <= 0)
     {
-      printf("select recv over timer! %d\n",getpid());
+      printf("select write over timer! %d\n",sk);
       quit = 1;
       usleep(500000);
-      return NULL;
+      return -1;
     }
     if(FD_ISSET(sk,&wset))
     {
@@ -517,7 +538,7 @@ int QNetTcpServer::READ(int sk, char *buf, int len)
   while (left > 0)
   {
     struct timeval tv;
-    tv.tv_sec = 5;
+    tv.tv_sec = 8;
     tv.tv_usec = 0;
     fd_set rset;
 
@@ -526,10 +547,11 @@ int QNetTcpServer::READ(int sk, char *buf, int len)
     int ret = select(sk + 1,&rset,NULL,NULL,&tv);
     if(ret <= 0)
     {
-      printf("select recv over timer! %d\n",getpid());
+      printf("select recv over timer! %d\n",sk);
       quit = 1;
       usleep(500000);
-      return NULL;
+      close(sk);
+      return -1;
     }
     if(FD_ISSET(sk,&rset))
     {
