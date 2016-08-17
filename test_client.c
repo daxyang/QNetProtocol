@@ -7,6 +7,7 @@ int file_serial;
 u32 file_len;
 u32 read_file_count;
 int viewinfo;
+int stream_id;
 void login_ack(char *data, u32 len)
 {
     app_net_ctrl_ack_login *login = (app_net_ctrl_ack_login *)data;
@@ -71,10 +72,10 @@ void filesend_ack(char *data, u32 len)
     //usleep(40000);
 }
 
-void connect()
+void connect(char *ip)
 {
     int port = 6666;
-    client->connect_server("192.168.3.124",port);
+    client->connect_server(ip,port);
     //usleep(200);
     client->start();
     usleep(2000);
@@ -142,6 +143,23 @@ void send_command(int index)
         free(buffer);
     }
         break;
+    case 6:
+    {
+      printf("video connect\n");
+      u32 len = sizeof(app_net_vid_connect);
+      char *buffer = (char *)malloc(sizeof(char) * len);
+      app_net_vid_connect *connect = (app_net_vid_connect *)buffer;
+      connect->streamid = stream_id;
+      client->main_cmd_process(NET_TCP_TYPE_VID,NET_VID_CONNECT,buffer,len);
+      free(buffer);
+    }
+      break;
+    case 7:
+      {
+        printf("get stream command\n");
+        client->main_cmd_process(NET_TCP_TYPE_VID,NET_VID_STREAM,NULL,0);
+      }
+      break;
 
     }
 }
@@ -166,12 +184,18 @@ void read_file_menu()
   printf("***** read file ******\n");
 
 }
+void vidstream_ack(char *data,u32 len)
+{
+  printf("stream len:%d\n",len);
+}
 void main_menu()
 {
   int index;
   printf("****** Main Menu ***********\n");
   printf("*** 4 - read file **********\n");
   printf("*** 5 - set read file name *\n");
+  printf("*** 6 - send stream connect*\n");
+  printf("*** 7 - get dvo_ipc stream *\n");
   printf("intput:");
   scanf("%d", &index);
   send_command(index);
@@ -194,6 +218,8 @@ void close_socket(int sig)
 }
 int main(int argc,char **argv)
 {
+  if(argc != 3)
+    return 0;
   client = new QNetClient();
   client->set_protocol_ack_callback(NET_TCP_TYPE_CTRL,NET_CTRL_LOGIN,login_ack);
   client->set_protocol_ack_callback(NET_TCP_TYPE_CTRL,NET_CTRL_LOGOUT,logout_ack);
@@ -201,9 +227,11 @@ int main(int argc,char **argv)
   client->set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_SEND,filesend_ack);
   client->set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_PATH,filepath_ack);
   client->set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_START,filestart_ack);
+  client->set_protocol_ack_callback(NET_TCP_TYPE_VID,NET_VID_STREAM,vidstream_ack);
   client->reply = close_socket;
   file_serial = 0;
-  connect();
+  stream_id = atoi(argv[2]);
+  connect(argv[1]);
   usleep(100000);
   while(1)
     main_menu();

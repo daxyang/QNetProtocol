@@ -39,12 +39,14 @@ typedef  unsigned long long u64;
 #define NET_FILE_SEND        0x0004
 #define NET_FILE_NAME        0x0005
 
-
+//视频传输
+#define NET_VID_CONNECT 0x0001
+#define NET_VID_STREAM  0x0002
 
 
 typedef struct app_net_head_pkg_t
 {
-    char Margin[4];  //4
+    char Margic[4];  //4
     u32 Length;  //4
     u16 CmdType;  //2
     u16 Version;  //2
@@ -60,10 +62,10 @@ typedef struct app_net_head_pkg_t
 
 
 #define _head_pkg(p,len,cmd_type,version,cmd_sub_type,hardware,datatype,sn,rev1,rev2,rev3) \
-    p->Margin[0] = 0x5a; \
-    p->Margin[1] = 0xa5; \
-    p->Margin[2] = 0x5a; \
-    p->Margin[3] = 0xa5; \
+    p->Margic[0] = 0x5a; \
+    p->Margic[1] = 0xa5; \
+    p->Margic[2] = 0x5a; \
+    p->Margic[3] = 0xa5; \
     p->Length  = htonl(len); \
     p->CmdType = htons(cmd_type); \
     p->Version = htons(version); \
@@ -192,8 +194,37 @@ typedef struct
 	  u16 Rev1;
 }app_net_file_ack_set_filename;
 
+/******传送视频码流******/
+//取码流连接
+//client
+typedef struct
+{
+  u8 streamid;
+  u8 Rev1;
+  u16 Rev2;
+}app_net_vid_connect;
+//server
+typedef struct
+{
+  u16 stat; //1:OK;0:Err;
+  u16 Rev1;
+}app_net_vid_ack_connect;
 
-
+//码流发送
+//client
+//none
+//server
+typedef struct
+{
+  u16 stream_id;
+  u16 frame_type;
+  u32 frame_number;
+  u16 sec;
+  u16 usec;
+  u32 pts;
+  u16 Rev1;
+  u16 Rev2;
+}app_net_vid_ack_stream;
 
 
 #endif

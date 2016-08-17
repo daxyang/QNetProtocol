@@ -27,7 +27,10 @@ struct cmd_link_t
     struct sub_cmd_link_t *subcmd_head;
     struct cmd_link_t *next;
 };
-class QNetTcpServer:public QAntProtocol
+//<modify by Antony 2016-8-17>
+//cass QNetTcpServer:public QAntProtocol
+class QNetTcpServer
+//<!2016-8-17>
 {
 public:
   QNetTcpServer();
@@ -61,8 +64,11 @@ private:
 
   //协议解析主函数
   void do_cmd_process(u16 cmdtype,u32 cmdsubtype,u32 len,char *data);
-  void do_file_process(u32 subcmdtype,u32 len,char *data); //File类协议
+  void do_file_process(u32 cmdsubtype,u32 len,char *data); //File类协议
   void do_ctrl_process(u32 cmdsubtype,u32 len,char *data); //Ctrl类协议
+  //<add by antony 2016-8-16>
+  void do_vid_process(u32 cmdsubtype,u32 len,char *data);
+  //<!2016-8-16>
 
 
   //命令链表管理

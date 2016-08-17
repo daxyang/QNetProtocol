@@ -2,66 +2,6 @@
 
 QNetTcpServer::QNetTcpServer()
 {
-  //初始化链表
-  head_cmd_link = new struct cmd_link_t;
-  head_cmd_link->no = 0;
-  head_cmd_link->cmd_type = 0;
-  head_cmd_link->subcmd_head = NULL;
-  head_cmd_link->next = NULL;
-  append_cmd_node(NET_TCP_TYPE_CTRL);
-  append_cmd_node(NET_TCP_TYPE_FILE);
-  append_cmd_node(NET_TCP_TYPE_VID);
-  append_cmd_node(NET_TCP_TYPE_AID);
-
-  struct sub_cmd_link_t *sub_cmd_logout = new struct sub_cmd_link_t;
-  sub_cmd_logout->no = NET_CTRL_LOGOUT;
-  sub_cmd_logout->sub_cmd_type = NET_CTRL_LOGOUT;
-  sub_cmd_logout->callback = ctrl_logout_ack;
-  sub_cmd_logout->next = NULL;
-  append_sub_cmd_node(NET_TCP_TYPE_CTRL,sub_cmd_logout);
-
-  struct sub_cmd_link_t *sub_cmd_heart = new struct sub_cmd_link_t;
-  sub_cmd_heart->no = NET_CTRL_HEART;
-  sub_cmd_heart->sub_cmd_type = NET_CTRL_HEART;
-  sub_cmd_heart->callback = ctrl_heart_ack;
-  sub_cmd_heart->next = NULL;
-  append_sub_cmd_node(NET_TCP_TYPE_CTRL,sub_cmd_heart);
-
-  struct sub_cmd_link_t *sub_cmd_filelist = new struct sub_cmd_link_t;
-  sub_cmd_filelist-> no = NET_FILE_LIST;
-  sub_cmd_filelist->sub_cmd_type = NET_FILE_LIST;
-  sub_cmd_filelist->callback = file_list_ack;
-  sub_cmd_filelist->next = NULL;
-  append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filelist);
-
-  struct sub_cmd_link_t *sub_cmd_filesend = new struct sub_cmd_link_t;
-  sub_cmd_filesend-> no = NET_FILE_SEND;
-  sub_cmd_filesend->sub_cmd_type = NET_FILE_SEND;
-  sub_cmd_filesend->callback = file_send_ack;
-  sub_cmd_filesend->next = NULL;
-  append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filesend);
-
-  struct sub_cmd_link_t *sub_cmd_filepath = new struct sub_cmd_link_t;
-  sub_cmd_filepath-> no = NET_FILE_PATH;
-  sub_cmd_filepath->sub_cmd_type = NET_FILE_PATH;
-  sub_cmd_filepath->callback = file_path_ack;
-  sub_cmd_filepath->next = NULL;
-  append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filepath);
-
-  struct sub_cmd_link_t *sub_cmd_filename = new struct sub_cmd_link_t;
-  sub_cmd_filename-> no = NET_FILE_NAME;
-  sub_cmd_filename->sub_cmd_type = NET_FILE_NAME;
-  sub_cmd_filename->callback = file_name_ack;
-  sub_cmd_filename->next = NULL;
-  append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filename);
-
-  struct sub_cmd_link_t *sub_cmd_filestart = new struct sub_cmd_link_t;
-  sub_cmd_filestart-> no = NET_FILE_START;
-  sub_cmd_filestart->sub_cmd_type = NET_FILE_START;
-  sub_cmd_filestart->callback = file_start_ack;
-  sub_cmd_filestart->next = NULL;
-  append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filestart);
-
   frame = new _frame_info_t;
   frame->frame_type = 20;
 
@@ -88,6 +28,119 @@ QNetTcpServer::QNetTcpServer()
   consume_recv = slidingwnd_recv->consume_linklist_getConsume(RECV_USER);
 
   ant_protocol = new QAntProtocol(slidingwnd_send);
+
+  //初始化链表
+  head_cmd_link = new struct cmd_link_t;
+  head_cmd_link->no = 0;
+  head_cmd_link->cmd_type = 0;
+  head_cmd_link->subcmd_head = NULL;
+  head_cmd_link->next = NULL;
+  append_cmd_node(NET_TCP_TYPE_CTRL);
+  append_cmd_node(NET_TCP_TYPE_FILE);
+  append_cmd_node(NET_TCP_TYPE_VID);
+  append_cmd_node(NET_TCP_TYPE_AID);
+  /*
+   *  CTRL类处理函数
+   */
+  struct sub_cmd_link_t *sub_cmd_logout = new struct sub_cmd_link_t;
+  sub_cmd_logout->no = NET_CTRL_LOGOUT;
+  sub_cmd_logout->sub_cmd_type = NET_CTRL_LOGOUT;
+  //<modify by Antony 2016-8-17>
+  //sub_cmd_logout->callback = ctrl_logout_ack;
+  sub_cmd_logout->callback = ant_protocol->ctrl_logout_ack;
+  //<!2016-8-17>
+  sub_cmd_logout->next = NULL;
+  append_sub_cmd_node(NET_TCP_TYPE_CTRL,sub_cmd_logout);
+
+  struct sub_cmd_link_t *sub_cmd_heart = new struct sub_cmd_link_t;
+  sub_cmd_heart->no = NET_CTRL_HEART;
+  sub_cmd_heart->sub_cmd_type = NET_CTRL_HEART;
+  //<modify by Antony 2016-8-17>
+  //sub_cmd_heart->callback = ctrl_heart_ack;
+  sub_cmd_heart->callback = ant_protocol->ctrl_heart_ack;
+  //<!2016-8-17>
+  sub_cmd_heart->next = NULL;
+  append_sub_cmd_node(NET_TCP_TYPE_CTRL,sub_cmd_heart);
+
+  /*
+   * FILE文件类处理函数
+   */
+  struct sub_cmd_link_t *sub_cmd_filelist = new struct sub_cmd_link_t;
+  sub_cmd_filelist-> no = NET_FILE_LIST;
+  sub_cmd_filelist->sub_cmd_type = NET_FILE_LIST;
+  //<modify by Antony 2016-8-17>
+  //sub_cmd_filelist->callback = file_list_ack;
+  sub_cmd_filelist->callback = ant_protocol->file_list_ack;
+  //<!2016-8-17>
+  sub_cmd_filelist->next = NULL;
+  append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filelist);
+
+  struct sub_cmd_link_t *sub_cmd_filesend = new struct sub_cmd_link_t;
+  sub_cmd_filesend-> no = NET_FILE_SEND;
+  sub_cmd_filesend->sub_cmd_type = NET_FILE_SEND;
+  //<modify by Antony 2016-8-17>
+  //sub_cmd_filesend->callback = file_send_ack;
+  sub_cmd_filesend->callback = ant_protocol->file_send_ack;
+  //<!2016-8-17>
+  sub_cmd_filesend->next = NULL;
+  append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filesend);
+
+  struct sub_cmd_link_t *sub_cmd_filepath = new struct sub_cmd_link_t;
+  sub_cmd_filepath-> no = NET_FILE_PATH;
+  sub_cmd_filepath->sub_cmd_type = NET_FILE_PATH;
+  //<modify by Antony 2016-8-17>
+  //sub_cmd_filepath->callback = file_path_ack;
+  sub_cmd_filepath->callback = ant_protocol->file_path_ack;
+  //<!2016-8-17>
+  sub_cmd_filepath->next = NULL;
+  append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filepath);
+
+  struct sub_cmd_link_t *sub_cmd_filename = new struct sub_cmd_link_t;
+  sub_cmd_filename-> no = NET_FILE_NAME;
+  sub_cmd_filename->sub_cmd_type = NET_FILE_NAME;
+  //<modify by Antony 2016-8-17>
+  //sub_cmd_filename->callback = file_name_ack;
+  sub_cmd_filename->callback = ant_protocol->file_name_ack;
+  //<!2016-8-17>
+  sub_cmd_filename->next = NULL;
+  append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filename);
+
+  struct sub_cmd_link_t *sub_cmd_filestart = new struct sub_cmd_link_t;
+  sub_cmd_filestart-> no = NET_FILE_START;
+  sub_cmd_filestart->sub_cmd_type = NET_FILE_START;
+  //<modify by Antony 2016-8-17>
+  //sub_cmd_filestart->callback = file_start_ack;
+  sub_cmd_filestart->callback = ant_protocol->file_start_ack;
+  //<!2016-8-17>
+  sub_cmd_filestart->next = NULL;
+  append_sub_cmd_node(NET_TCP_TYPE_FILE,sub_cmd_filestart);
+  /*
+   * AUDIO类处理函数 add by antory 2016-8-15
+   */
+  struct sub_cmd_link_t *sub_cmd_vid_connect = new struct sub_cmd_link_t;
+  sub_cmd_vid_connect-> no = NET_VID_CONNECT;
+  sub_cmd_vid_connect->sub_cmd_type = NET_VID_CONNECT;
+  //<modify by Antony 2016-8-17>
+  //sub_cmd_vid_connect->callback = vid_connect_ack;
+  sub_cmd_vid_connect->callback = ant_protocol->vid_connect_ack;
+  //<!2016-8-17>
+  sub_cmd_vid_connect->next = NULL;
+  append_sub_cmd_node(NET_TCP_TYPE_VID,sub_cmd_vid_connect);
+
+  struct sub_cmd_link_t *sub_cmd_vid_stream = new struct sub_cmd_link_t;
+  sub_cmd_vid_stream-> no = NET_VID_STREAM;
+  sub_cmd_vid_stream->sub_cmd_type = NET_VID_STREAM;
+  //<modify by Antony 2016-8-17>
+  //sub_cmd_vid_stream->callback = vid_stream_ack;
+  sub_cmd_vid_stream->callback = ant_protocol->vid_stream_ack;
+  //<!2016-8-17>
+  sub_cmd_vid_stream->next = NULL;
+  append_sub_cmd_node(NET_TCP_TYPE_VID,sub_cmd_vid_stream);
+
+  //<!2016-8-15>
+  /*
+   * 添加协议处理函数
+   */
 
 }
 QNetTcpServer::~QNetTcpServer()
@@ -322,6 +375,7 @@ void QNetTcpServer::do_cmd_process(u16 cmdtype,u32 cmdsubtype,u32 len,char *data
       do_file_process(cmdsubtype,len,data);
     break;
     case NET_TCP_TYPE_VID:
+      do_vid_process(cmdsubtype,len,data);
     break;
     case NET_TCP_TYPE_AID:
     break;
@@ -368,13 +422,13 @@ void QNetTcpServer::do_ctrl_process(u32 cmdsubtype,u32 len,char *data)
   break;
   }
 }
-void QNetTcpServer::do_file_process(u32 subcmdtype,u32 len,char *data)
+void QNetTcpServer::do_file_process(u32 cmdsubtype,u32 len,char *data)
 {
   struct cmd_transmit_t cmd;
   cmd.data = data;
   cmd.ptr = ant_protocol;
   cmd.len = len;
-  switch (subcmdtype) {
+  switch (cmdsubtype) {
   case NET_FILE_LIST:
   {
     struct sub_cmd_link_t *filelist = search_subcmd_node(NET_TCP_TYPE_FILE,NET_FILE_LIST);
@@ -410,6 +464,29 @@ void QNetTcpServer::do_file_process(u32 subcmdtype,u32 len,char *data)
     filestart->callback(&cmd);
   }
   break;
+  }
+}
+void QNetTcpServer::do_vid_process(u32 cmdsubtype,u32 len,char *data)
+{
+  struct cmd_transmit_t cmd;
+  cmd.data = data;
+  cmd.ptr = ant_protocol;
+  cmd.len = len;
+  switch (cmdsubtype) {
+    case NET_VID_CONNECT:
+    { //<add by Antony 2016-8-17>
+      struct sub_cmd_link_t *connect_ack = search_subcmd_node(NET_TCP_TYPE_VID,NET_VID_CONNECT);
+      printf("NET_VID_CONNECT\n");
+      connect_ack->callback(&cmd);
+    } //<!2016-8-17>
+    break;
+    case NET_VID_STREAM:
+    {
+    struct sub_cmd_link_t *stream_ack = search_subcmd_node(NET_TCP_TYPE_VID,NET_VID_STREAM);
+    printf("NET_VID_STREAM\n");
+    stream_ack->callback(&cmd);
+    }
+    break;
   }
 }
 //添加主节点
@@ -511,6 +588,7 @@ int QNetTcpServer::WRITE(int sk, char *buf, int len)
     if(ret <= 0)
     {
       printf("select write over timer! %d\n",sk);
+      pthread_cancel(ant_protocol->stream_pthread_id);
       quit = 1;
       usleep(500000);
       return -1;
@@ -549,6 +627,7 @@ int QNetTcpServer::READ(int sk, char *buf, int len)
     {
       printf("select recv over timer! %d\n",sk);
       quit = 1;
+      pthread_cancel(ant_protocol->stream_pthread_id);
       usleep(500000);
       close(sk);
       return -1;

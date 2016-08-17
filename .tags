@@ -1,0 +1,286 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+NET_PROTOCOL_H	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_PROTOCOL_H$/;"	macro	line:2
+HELLO_WORLD_SERVER_PORT	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define HELLO_WORLD_SERVER_PORT /;"	macro	line:16
+LENGTH_OF_LISTEN_QUEUE	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define LENGTH_OF_LISTEN_QUEUE /;"	macro	line:17
+TIMEOUT	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define TIMEOUT /;"	macro	line:19
+u8	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^typedef unsigned char       u8;$/;"	typedef	line:21
+u16	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^typedef unsigned short      u16;$/;"	typedef	line:22
+u32	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^typedef unsigned int         u32;$/;"	typedef	line:23
+u64	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^typedef  unsigned long long u64;$/;"	typedef	line:24
+NET_TCP_TYPE_CTRL	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_TCP_TYPE_CTRL /;"	macro	line:26
+NET_TCP_TYPE_FILE	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_TCP_TYPE_FILE /;"	macro	line:27
+NET_TCP_TYPE_VID	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_TCP_TYPE_VID /;"	macro	line:28
+NET_TCP_TYPE_AID	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_TCP_TYPE_AID /;"	macro	line:29
+NET_CTRL_LOGIN	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_CTRL_LOGIN /;"	macro	line:32
+NET_CTRL_LOGOUT	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_CTRL_LOGOUT /;"	macro	line:33
+NET_CTRL_HEART	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_CTRL_HEART /;"	macro	line:34
+NET_FILE_LIST	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_FILE_LIST /;"	macro	line:36
+NET_FILE_START	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_FILE_START /;"	macro	line:37
+NET_FILE_PATH	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_FILE_PATH /;"	macro	line:38
+NET_FILE_SEND	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_FILE_SEND /;"	macro	line:39
+NET_FILE_NAME	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_FILE_NAME /;"	macro	line:40
+NET_VID_CONNECT	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_VID_CONNECT /;"	macro	line:43
+NET_VID_STREAM	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_VID_STREAM /;"	macro	line:44
+app_net_head_pkg_t	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^typedef struct app_net_head_pkg_t$/;"	struct	line:47
+Margic	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    char Margic[4];  \/\/4$/;"	member	line:49	struct:app_net_head_pkg_t
+Length	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u32 Length;  \/\/4$/;"	member	line:50	struct:app_net_head_pkg_t
+CmdType	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16 CmdType;  \/\/2$/;"	member	line:51	struct:app_net_head_pkg_t
+Version	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16 Version;  \/\/2$/;"	member	line:52	struct:app_net_head_pkg_t
+CmdSubType	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u32 CmdSubType;  \/\/4$/;"	member	line:53	struct:app_net_head_pkg_t
+Hardware	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u32 Hardware;  \/\/2$/;"	member	line:54	struct:app_net_head_pkg_t
+DataType	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u32 DataType; \/\/2$/;"	member	line:55	struct:app_net_head_pkg_t
+Sn	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u64 Sn;  \/\/8$/;"	member	line:56	struct:app_net_head_pkg_t
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16 Rev1;  \/\/2$/;"	member	line:57	struct:app_net_head_pkg_t
+Rev2	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16 Rev2; \/\/2$/;"	member	line:58	struct:app_net_head_pkg_t
+Rev3	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u32 Rev3;  \/\/4$/;"	member	line:59	struct:app_net_head_pkg_t
+app_net_head_pkg_t	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^} app_net_head_pkg_t;$/;"	typedef	line:61	typeref:struct:app_net_head_pkg_t
+_head_pkg	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define _head_pkg(/;"	macro	line:64
+NET_HEAD_SIZE	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define NET_HEAD_SIZE /;"	macro	line:80
+HEAD_PKG	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^#define HEAD_PKG(/;"	macro	line:82
+name	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    char name[16];$/;"	member	line:89	struct:__anon1
+passwd	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    char passwd[16];$/;"	member	line:90	struct:__anon1
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u32 Rev1;$/;"	member	line:91	struct:__anon1
+app_net_ctrl_login	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_ctrl_login;$/;"	typedef	line:92	typeref:struct:__anon1
+state	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16 state;$/;"	member	line:96	struct:__anon2
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16 Rev1;$/;"	member	line:97	struct:__anon2
+app_net_ctrl_ack_login	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_ctrl_ack_login;$/;"	typedef	line:98	typeref:struct:__anon2
+status	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^enum status{$/;"	enum	line:100
+APP_NET_LOGIN_SUCCESS	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    APP_NET_LOGIN_SUCCESS = 0,$/;"	enumerator	line:101	enum:status
+APP_NET_LOGIN_USER_FAILE	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    APP_NET_LOGIN_USER_FAILE,$/;"	enumerator	line:102	enum:status
+APP_NET_LOGIN_PASSWD_FAILE	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    APP_NET_LOGIN_PASSWD_FAILE,$/;"	enumerator	line:103	enum:status
+APP_NET_LOGIN_USER_LOCK	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    APP_NET_LOGIN_USER_LOCK,$/;"	enumerator	line:104	enum:status
+APP_NET_LOGIN_UNKNOW	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    APP_NET_LOGIN_UNKNOW,$/;"	enumerator	line:105	enum:status
+state	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16 state;$/;"	member	line:112	struct:__anon3
+app_net_ctrl_ack_logout	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_ctrl_ack_logout;$/;"	typedef	line:113	typeref:struct:__anon3
+log_out_statue	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^enum log_out_statue{$/;"	enum	line:114
+APP_NET_LOGOUT_OK	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    APP_NET_LOGOUT_OK = 0,$/;"	enumerator	line:115	enum:log_out_statue
+APP_NET_LOGOUT_ERROR	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    APP_NET_LOGOUT_ERROR,$/;"	enumerator	line:116	enum:log_out_statue
+file_number	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u8 file_number;$/;"	member	line:123	struct:__anon4
+file	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    char file[20][256];$/;"	member	line:124	struct:__anon4
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16 Rev1;$/;"	member	line:125	struct:__anon4
+Rev2	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16 Rev2;$/;"	member	line:126	struct:__anon4
+app_net_file_ack_list	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^} app_net_file_ack_list;$/;"	typedef	line:127	typeref:struct:__anon4
+path	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^        char path[1024];$/;"	member	line:132	struct:__anon5
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^        u16 Rev1;$/;"	member	line:133	struct:__anon5
+app_net_file_path	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_file_path;$/;"	typedef	line:134	typeref:struct:__anon5
+state	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 state;$/;"	member	line:138	struct:__anon6
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 Rev1;$/;"	member	line:139	struct:__anon6
+app_net_file_ack_path	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_file_ack_path;$/;"	typedef	line:140	typeref:struct:__anon6
+filename	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  char filename[1024];$/;"	member	line:145	struct:__anon7
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u32 Rev1;$/;"	member	line:146	struct:__anon7
+app_net_file_start_read	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_file_start_read;$/;"	typedef	line:147	typeref:struct:__anon7
+file_len	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u32 file_len;$/;"	member	line:151	struct:__anon8
+app_net_file_ack_start_read	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_file_ack_start_read;$/;"	typedef	line:152	typeref:struct:__anon8
+serial	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^        u32 serial;$/;"	member	line:156	struct:__anon9
+len	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^        u16 len;$/;"	member	line:157	struct:__anon9
+Rev	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^        u16 Rev;$/;"	member	line:158	struct:__anon9
+app_net_file_send	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_file_send;$/;"	typedef	line:159	typeref:struct:__anon9
+serial	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^        u32 serial;$/;"	member	line:163	struct:__anon10
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^        u32 Rev1;$/;"	member	line:164	struct:__anon10
+app_net_file_ack_send	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_file_ack_send;$/;"	typedef	line:165	typeref:struct:__anon10
+yy	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16  yy;$/;"	member	line:169	struct:__anon11
+MM	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u8   MM;$/;"	member	line:170	struct:__anon11
+dd	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u8   dd;$/;"	member	line:171	struct:__anon11
+hh	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u8		hh;$/;"	member	line:172	struct:__anon11
+mm	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u8		mm;$/;"	member	line:173	struct:__anon11
+ss	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u8		ss;$/;"	member	line:174	struct:__anon11
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u8  Rev1;$/;"	member	line:175	struct:__anon11
+app_net_ctrl_heart	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_ctrl_heart;$/;"	typedef	line:176	typeref:struct:__anon11
+state	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^        u8 state;$/;"	member	line:180	struct:__anon12
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^        u8 Rev1;$/;"	member	line:181	struct:__anon12
+Rev2	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^        u16 Rev2;$/;"	member	line:182	struct:__anon12
+app_net_ctrl_ack_heart	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_ctrl_ack_heart;$/;"	typedef	line:183	typeref:struct:__anon12
+filename	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^		char filename[64];$/;"	member	line:187	struct:__anon13
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^		u32 Rev1;$/;"	member	line:188	struct:__anon13
+app_net_file_set_fileame	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_file_set_fileame;$/;"	typedef	line:189	typeref:struct:__anon13
+state	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^    u16 state;$/;"	member	line:193	struct:__anon14
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^	  u16 Rev1;$/;"	member	line:194	struct:__anon14
+app_net_file_ack_set_filename	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_file_ack_set_filename;$/;"	typedef	line:195	typeref:struct:__anon14
+streamid	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u8 streamid;$/;"	member	line:202	struct:__anon15
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u8 Rev1;$/;"	member	line:203	struct:__anon15
+Rev2	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 Rev2;$/;"	member	line:204	struct:__anon15
+app_net_vid_connect	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_vid_connect;$/;"	typedef	line:205	typeref:struct:__anon15
+stat	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 stat; \/\/1:OK;0:Err;$/;"	member	line:209	struct:__anon16
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 Rev1;$/;"	member	line:210	struct:__anon16
+app_net_vid_ack_connect	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_vid_ack_connect;$/;"	typedef	line:211	typeref:struct:__anon16
+stream_id	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 stream_id;$/;"	member	line:219	struct:__anon17
+frame_type	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 frame_type;$/;"	member	line:220	struct:__anon17
+frame_number	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u32 frame_number;$/;"	member	line:221	struct:__anon17
+sec	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 sec;$/;"	member	line:222	struct:__anon17
+usec	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 usec;$/;"	member	line:223	struct:__anon17
+pts	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u32 pts;$/;"	member	line:224	struct:__anon17
+Rev1	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 Rev1;$/;"	member	line:225	struct:__anon17
+Rev2	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^  u16 Rev2;$/;"	member	line:226	struct:__anon17
+app_net_vid_ack_stream	/Users/qianzhengyang/QNetProtocol/net_protocol.h	/^}app_net_vid_ack_stream;$/;"	typedef	line:227	typeref:struct:__anon17
+QNETCLIENT_H	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^#define QNETCLIENT_H$/;"	macro	line:2
+PROTOCOL_BUFFER_LEN	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^#define PROTOCOL_BUFFER_LEN /;"	macro	line:7
+SEND_USER	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^#define SEND_USER /;"	macro	line:8
+RECV_USER	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^#define RECV_USER /;"	macro	line:9
+sub_cmd_link_t	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^struct sub_cmd_link_t$/;"	struct	line:11
+no	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  int no;$/;"	member	line:13	struct:sub_cmd_link_t
+sub_cmd_type	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  u32 sub_cmd_type;$/;"	member	line:14	struct:sub_cmd_link_t
+callback	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  void (*callback)(char *data,u32 len);$/;"	member	line:15	struct:sub_cmd_link_t
+next	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  struct sub_cmd_link_t *next;$/;"	member	line:16	struct:sub_cmd_link_t	typeref:struct:sub_cmd_link_t::sub_cmd_link_t
+cmd_link_t	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^struct cmd_link_t$/;"	struct	line:19
+no	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^    int no;$/;"	member	line:21	struct:cmd_link_t
+cmd_type	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^    u16 cmd_type;$/;"	member	line:22	struct:cmd_link_t
+subcmd_head	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^    struct sub_cmd_link_t *subcmd_head;$/;"	member	line:23	struct:cmd_link_t	typeref:struct:cmd_link_t::sub_cmd_link_t
+next	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^    struct cmd_link_t *next;$/;"	member	line:24	struct:cmd_link_t	typeref:struct:cmd_link_t::cmd_link_t
+QNetClient	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^class QNetClient$/;"	class	line:27
+client_socket	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  int client_socket;$/;"	member	line:32	class:QNetClient
+reply	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  void (*reply)(int sig);$/;"	member	line:40	class:QNetClient
+quit	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  int quit;$/;"	member	line:41	class:QNetClient
+send_sliding	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  QSlidingWindow *send_sliding;  \/\/发送缓冲区生产者$/;"	member	line:58	class:QNetClient
+recv_sliding	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  QSlidingWindow *recv_sliding;  \/\/接受缓冲区生产者$/;"	member	line:59	class:QNetClient
+send_consume	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  QSlidingWindowConsume *send_consume;  \/\/发送缓冲区消费者$/;"	member	line:60	class:QNetClient
+recv_consume	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  QSlidingWindowConsume *recv_consume;  \/\/接受缓冲区消费者$/;"	member	line:61	class:QNetClient
+send_buffer	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  char *send_buffer;  \/\/发送缓冲区$/;"	member	line:62	class:QNetClient
+recv_buffer	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  char *recv_buffer;  \/\/接受缓冲区$/;"	member	line:63	class:QNetClient
+send_pthread_id	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  pthread_t send_pthread_id;$/;"	member	line:65	class:QNetClient
+recv_pthread_id	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  pthread_t recv_pthread_id;$/;"	member	line:66	class:QNetClient
+treasmit_pthread_id	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  pthread_t treasmit_pthread_id;$/;"	member	line:67	class:QNetClient
+head_cmd_node	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  struct cmd_link_t *head_cmd_node;   \/\/主命令的链表头$/;"	member	line:96	class:QNetClient	typeref:struct:QNetClient::cmd_link_t
+frame	/Users/qianzhengyang/QNetProtocol/QNetClient.h	/^  struct _frame_info_t *frame;$/;"	member	line:114	class:QNetClient	typeref:struct:QNetClient::_frame_info_t
+QNETSERVER_H	/Users/qianzhengyang/QNetProtocol/QNetServer.h	/^#define QNETSERVER_H$/;"	macro	line:2
+QNetServer	/Users/qianzhengyang/QNetProtocol/QNetServer.h	/^class QNetServer$/;"	class	line:6
+server_addr	/Users/qianzhengyang/QNetProtocol/QNetServer.h	/^  struct sockaddr_in server_addr;$/;"	member	line:14	class:QNetServer	typeref:struct:QNetServer::sockaddr_in
+server_socket	/Users/qianzhengyang/QNetProtocol/QNetServer.h	/^  int server_socket ;$/;"	member	line:15	class:QNetServer
+head_cmd_link	/Users/qianzhengyang/QNetProtocol/QNetServer.h	/^  struct cmd_link_t *head_cmd_link;\/\/主节点的头$/;"	member	line:16	class:QNetServer	typeref:struct:QNetServer::cmd_link_t
+server_pthread_id	/Users/qianzhengyang/QNetProtocol/QNetServer.h	/^  pthread_t server_pthread_id;$/;"	member	line:17	class:QNetServer
+sock_id	/Users/qianzhengyang/QNetProtocol/QNetServer.h	/^  int sock_id;$/;"	member	line:25	class:QNetServer
+main	/Users/qianzhengyang/QNetProtocol/test_server.c	/^int main()$/;"	function	line:3
+TARGET	/Users/qianzhengyang/QNetProtocol/Makefile	/^TARGET=libQNetProtocol.so$/;"	macro	line:1
+CC	/Users/qianzhengyang/QNetProtocol/Makefile	/^CC=arm-none-linux-gnueabi-g++$/;"	macro	line:4
+INCLUDE	/Users/qianzhengyang/QNetProtocol/Makefile	/^INCLUDE =-I..\/QSlidingWindowConsume -I..\/QSlidingWindow -I..\/GetDVOStream$/;"	macro	line:6
+QNetClient	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^QNetClient::QNetClient()$/;"	function	line:3	class:QNetClient	signature:()
+~QNetClient	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^QNetClient::~QNetClient()$/;"	function	line:53	class:QNetClient	signature:()
+connect_server	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^int QNetClient::connect_server(char *ip,int port)$/;"	function	line:58	class:QNetClient	signature:(char *ip,int port)
+append_cmd_link_node	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::append_cmd_link_node(u16 cmd_type)$/;"	function	line:186	class:QNetClient	signature:(u16 cmd_type)
+append_subcmd_link_node	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::append_subcmd_link_node(u16 cmd_type,u32 sub_cmd_type,void (*function)(char *data,u32 len))$/;"	function	line:222	class:QNetClient	signature:(u16 cmd_type,u32 sub_cmd_type,void (*function)(char *data,u32 len))
+search_subcmd_node	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^struct sub_cmd_link_t *QNetClient::search_subcmd_node(u16 cmd_type,u32 sub_cmd_type)$/;"	function	line:260	class:QNetClient	signature:(u16 cmd_type,u32 sub_cmd_type)
+search_subcmd_head	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^struct sub_cmd_link_t *QNetClient::search_subcmd_head(u16 cmd_type)$/;"	function	line:285	class:QNetClient	signature:(u16 cmd_type)
+main_cmd_process	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::main_cmd_process(u16 cmd_type,u32 sub_cmd_type,char *data,u32 len)$/;"	function	line:310	class:QNetClient	signature:(u16 cmd_type,u32 sub_cmd_type,char *data,u32 len)
+do_ctrl_protocol_process	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::do_ctrl_protocol_process(u32 sub_cmd_type,char *data,u32 len)$/;"	function	line:336	class:QNetClient	signature:(u32 sub_cmd_type,char *data,u32 len)
+do_file_protocol_process	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::do_file_protocol_process(u32 sub_cmd_type,char *data,u32 len)$/;"	function	line:367	class:QNetClient	signature:(u32 sub_cmd_type,char *data,u32 len)
+do_audio_protocol_process	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::do_audio_protocol_process(u32 sub_cmd_type,char *data,u32 len)$/;"	function	line:392	class:QNetClient	signature:(u32 sub_cmd_type,char *data,u32 len)
+do_video_protocol_process	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::do_video_protocol_process(u32 sub_cmd_type,char *data,u32 len)$/;"	function	line:401	class:QNetClient	signature:(u32 sub_cmd_type,char *data,u32 len)
+set_protocol_ack_callback	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::set_protocol_ack_callback(u16 cmd_type,u32 sub_cmd_type,void (*function)(char *data,u32 len))$/;"	function	line:431	class:QNetClient	signature:(u16 cmd_type,u32 sub_cmd_type,void (*function)(char *data,u32 len))
+run_send_pthread	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void *QNetClient::run_send_pthread(void *ptr)$/;"	function	line:440	class:QNetClient	signature:(void *ptr)
+send_pthread_start	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::send_pthread_start()$/;"	function	line:501	class:QNetClient	signature:()
+run_recv_pthread	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void *QNetClient::run_recv_pthread(void *ptr)$/;"	function	line:510	class:QNetClient	signature:(void *ptr)
+recv_pthread_start	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::recv_pthread_start()$/;"	function	line:536	class:QNetClient	signature:()
+run_treasmit_pthread	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void *QNetClient::run_treasmit_pthread(void *ptr)$/;"	function	line:545	class:QNetClient	signature:(void *ptr)
+treasmit_pthread_start	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::treasmit_pthread_start()$/;"	function	line:576	class:QNetClient	signature:()
+start	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::start()$/;"	function	line:585	class:QNetClient	signature:()
+WRITE	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^int QNetClient::WRITE(int sk, char *buf, int len)$/;"	function	line:599	class:QNetClient	signature:(int sk, char *buf, int len)
+READ	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^int QNetClient::READ(int sk, char *buf, int len)$/;"	function	line:620	class:QNetClient	signature:(int sk, char *buf, int len)
+close_client	/Users/qianzhengyang/QNetProtocol/QNetClient.cpp	/^void QNetClient::close_client()$/;"	function	line:649	class:QNetClient	signature:()
+reaper	/Users/qianzhengyang/QNetProtocol/QNetServer.cpp	/^void reaper(int sig)$/;"	function	line:3	signature:(int sig)
+QNetServer	/Users/qianzhengyang/QNetProtocol/QNetServer.cpp	/^QNetServer::QNetServer()$/;"	function	line:10	class:QNetServer	signature:()
+init	/Users/qianzhengyang/QNetProtocol/QNetServer.cpp	/^void QNetServer::init()$/;"	function	line:15	class:QNetServer	signature:()
+start	/Users/qianzhengyang/QNetProtocol/QNetServer.cpp	/^void QNetServer::start()$/;"	function	line:41	class:QNetServer	signature:()
+run_server	/Users/qianzhengyang/QNetProtocol/QNetServer.cpp	/^void *QNetServer::run_server(void *ptr)$/;"	function	line:50	class:QNetServer	signature:(void *ptr)
+start_sub_server	/Users/qianzhengyang/QNetProtocol/QNetServer.cpp	/^void QNetServer::start_sub_server(int sk)$/;"	function	line:94	class:QNetServer	signature:(int sk)
+run_sub_server	/Users/qianzhengyang/QNetProtocol/QNetServer.cpp	/^void *QNetServer::run_sub_server(void *ptr)$/;"	function	line:104	class:QNetServer	signature:(void *ptr)
+QANTPROTOCOL_H	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^#define QANTPROTOCOL_H$/;"	macro	line:2
+cmd_transmit_t	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^struct cmd_transmit_t$/;"	struct	line:10
+ptr	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^    void *ptr;$/;"	member	line:12	struct:cmd_transmit_t
+data	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^    char *data;$/;"	member	line:13	struct:cmd_transmit_t
+len	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^    u32 len;$/;"	member	line:14	struct:cmd_transmit_t
+QAntProtocol	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^class QAntProtocol$/;"	class	line:18
+pthread_quit	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^  int pthread_quit;$/;"	member	line:39	class:QAntProtocol
+stream_pthread_id	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^  pthread_t stream_pthread_id;$/;"	member	line:47	class:QAntProtocol
+send_sliding	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^  QSlidingWindow *send_sliding;$/;"	member	line:52	class:QAntProtocol
+frame	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^  struct _frame_info_t *frame;$/;"	member	line:53	class:QAntProtocol	typeref:struct:QAntProtocol::_frame_info_t
+file	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^  FILE *file;$/;"	member	line:55	class:QAntProtocol
+path	/Users/qianzhengyang/QNetProtocol/QAntProtocol.h	/^  char path[1024];$/;"	member	line:56	class:QAntProtocol
+QAntProtocol	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^QAntProtocol::QAntProtocol()$/;"	function	line:3	class:QAntProtocol	signature:()
+~QAntProtocol	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^QAntProtocol::~QAntProtocol()$/;"	function	line:7	class:QAntProtocol	signature:()
+QAntProtocol	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^QAntProtocol::QAntProtocol(QSlidingWindow *sliding)$/;"	function	line:10	class:QAntProtocol	signature:(QSlidingWindow *sliding)
+ctrl_logout_ack	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void QAntProtocol::ctrl_logout_ack(void *ptr)$/;"	function	line:24	class:QAntProtocol	signature:(void *ptr)
+ctrl_heart_ack	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void QAntProtocol::ctrl_heart_ack(void *ptr)$/;"	function	line:43	class:QAntProtocol	signature:(void *ptr)
+file_name_ack	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void QAntProtocol::file_name_ack(void *ptr)$/;"	function	line:65	class:QAntProtocol	signature:(void *ptr)
+file_list_ack	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void QAntProtocol::file_list_ack(void *ptr)$/;"	function	line:68	class:QAntProtocol	signature:(void *ptr)
+file_start_ack	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void QAntProtocol::file_start_ack(void *ptr)$/;"	function	line:118	class:QAntProtocol	signature:(void *ptr)
+file_path_ack	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void QAntProtocol::file_path_ack(void *ptr)$/;"	function	line:159	class:QAntProtocol	signature:(void *ptr)
+file_send_ack	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void QAntProtocol::file_send_ack(void *ptr)$/;"	function	line:189	class:QAntProtocol	signature:(void *ptr)
+vid_connect_ack	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void QAntProtocol::vid_connect_ack(void *ptr)$/;"	function	line:221	class:QAntProtocol	signature:(void *ptr)
+vid_stream_ack	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void QAntProtocol::vid_stream_ack(void *ptr)$/;"	function	line:245	class:QAntProtocol	signature:(void *ptr)
+start_send_stream	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void QAntProtocol::start_send_stream()$/;"	function	line:256	class:QAntProtocol	signature:()
+send_stream_pthread_cancel	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^int QAntProtocol::send_stream_pthread_cancel()$/;"	function	line:265	class:QAntProtocol	signature:()
+run_send_stream	/Users/qianzhengyang/QNetProtocol/QAntProtocol.cpp	/^void *QAntProtocol::run_send_stream(void *ptr)$/;"	function	line:270	class:QAntProtocol	signature:(void *ptr)
+QNETTCPSERVER_H	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^#define QNETTCPSERVER_H$/;"	macro	line:2
+SEND_USER	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^#define SEND_USER /;"	macro	line:10
+RECV_USER	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^#define RECV_USER /;"	macro	line:11
+CMD_BUFFER_LEN	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^#define CMD_BUFFER_LEN /;"	macro	line:12
+sub_cmd_link_t	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^struct sub_cmd_link_t$/;"	struct	line:15
+no	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  int no;$/;"	member	line:17	struct:sub_cmd_link_t
+sub_cmd_type	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  u32 sub_cmd_type;$/;"	member	line:18	struct:sub_cmd_link_t
+callback	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  void (*callback)(void *ptr);$/;"	member	line:19	struct:sub_cmd_link_t
+next	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  struct sub_cmd_link_t *next;$/;"	member	line:20	struct:sub_cmd_link_t	typeref:struct:sub_cmd_link_t::sub_cmd_link_t
+cmd_link_t	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^struct cmd_link_t$/;"	struct	line:23
+no	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^    int no;$/;"	member	line:25	struct:cmd_link_t
+cmd_type	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^    u16 cmd_type;$/;"	member	line:26	struct:cmd_link_t
+subcmd_head	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^    struct sub_cmd_link_t *subcmd_head;$/;"	member	line:27	struct:cmd_link_t	typeref:struct:cmd_link_t::sub_cmd_link_t
+next	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^    struct cmd_link_t *next;$/;"	member	line:28	struct:cmd_link_t	typeref:struct:cmd_link_t::cmd_link_t
+QNetTcpServer	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^class QNetTcpServer \/\/:public QAntProtocol$/;"	class	line:30
+quit	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  int quit;$/;"	member	line:38	class:QNetTcpServer
+socket	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  int socket;$/;"	member	line:46	class:QNetTcpServer
+slidingwnd_recv	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  QSlidingWindow *slidingwnd_recv,*slidingwnd_send;$/;"	member	line:49	class:QNetTcpServer
+slidingwnd_send	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  QSlidingWindow *slidingwnd_recv,*slidingwnd_send;$/;"	member	line:49	class:QNetTcpServer
+consume_recv	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  QSlidingWindowConsume  *consume_recv,*consume_send;$/;"	member	line:50	class:QNetTcpServer
+consume_send	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  QSlidingWindowConsume  *consume_recv,*consume_send;$/;"	member	line:50	class:QNetTcpServer
+frame	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  struct _frame_info_t *frame;$/;"	member	line:51	class:QNetTcpServer	typeref:struct:QNetTcpServer::_frame_info_t
+send_buffer	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  char *send_buffer;$/;"	member	line:52	class:QNetTcpServer
+recv_buffer	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  char *recv_buffer;$/;"	member	line:53	class:QNetTcpServer
+recv_pthread_id	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  pthread_t recv_pthread_id;$/;"	member	line:55	class:QNetTcpServer
+send_pthread_id	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  pthread_t send_pthread_id;$/;"	member	line:56	class:QNetTcpServer
+treasmit_pthread_id	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  pthread_t treasmit_pthread_id;$/;"	member	line:57	class:QNetTcpServer
+head_cmd_link	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  struct cmd_link_t *head_cmd_link;\/\/主节点的头$/;"	member	line:76	class:QNetTcpServer	typeref:struct:QNetTcpServer::cmd_link_t
+ant_protocol	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.h	/^  QAntProtocol *ant_protocol;$/;"	member	line:78	class:QNetTcpServer
+QNetTcpServer	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^QNetTcpServer::QNetTcpServer()$/;"	function	line:3	class:QNetTcpServer	signature:()
+~QNetTcpServer	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^QNetTcpServer::~QNetTcpServer()$/;"	function	line:119	class:QNetTcpServer	signature:()
+login	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^int QNetTcpServer::login(int sk)$/;"	function	line:134	class:QNetTcpServer	signature:(int sk)
+run_cmd_process	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void *QNetTcpServer::run_cmd_process(void *ptr)$/;"	function	line:180	class:QNetTcpServer	signature:(void *ptr)
+run_recv_cmd	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void *QNetTcpServer::run_recv_cmd(void *ptr)$/;"	function	line:217	class:QNetTcpServer	signature:(void *ptr)
+start_treasmit	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void QNetTcpServer::start_treasmit()$/;"	function	line:265	class:QNetTcpServer	signature:()
+start_recv	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void QNetTcpServer::start_recv()$/;"	function	line:276	class:QNetTcpServer	signature:()
+start_send	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void QNetTcpServer::start_send()$/;"	function	line:289	class:QNetTcpServer	signature:()
+run_send_cmd	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void *QNetTcpServer::run_send_cmd(void *ptr)$/;"	function	line:298	class:QNetTcpServer	signature:(void *ptr)
+server_start	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void QNetTcpServer::server_start(int sk)$/;"	function	line:327	class:QNetTcpServer	signature:(int sk)
+do_cmd_process	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void QNetTcpServer::do_cmd_process(u16 cmdtype,u32 cmdsubtype,u32 len,char *data)$/;"	function	line:341	class:QNetTcpServer	signature:(u16 cmdtype,u32 cmdsubtype,u32 len,char *data)
+do_ctrl_process	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void QNetTcpServer::do_ctrl_process(u32 cmdsubtype,u32 len,char *data)$/;"	function	line:369	class:QNetTcpServer	signature:(u32 cmdsubtype,u32 len,char *data)
+do_file_process	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void QNetTcpServer::do_file_process(u32 cmdsubtype,u32 len,char *data)$/;"	function	line:398	class:QNetTcpServer	signature:(u32 cmdsubtype,u32 len,char *data)
+do_vid_process	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void QNetTcpServer::do_vid_process(u32 cmdsubtype,u32 len,char *data)$/;"	function	line:442	class:QNetTcpServer	signature:(u32 cmdsubtype,u32 len,char *data)
+append_cmd_node	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void QNetTcpServer::append_cmd_node(u16 cmdtype)$/;"	function	line:461	class:QNetTcpServer	signature:(u16 cmdtype)
+append_sub_cmd_node	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^void QNetTcpServer::append_sub_cmd_node(u16 cmd_type,struct sub_cmd_link_t *sub_cmd_link)$/;"	function	line:488	class:QNetTcpServer	signature:(u16 cmd_type,struct sub_cmd_link_t *sub_cmd_link)
+search_subcmd_head	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^struct sub_cmd_link_t *QNetTcpServer::search_subcmd_head(u16 cmd_type)$/;"	function	line:504	class:QNetTcpServer	signature:(u16 cmd_type)
+search_subcmd_node	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^struct sub_cmd_link_t *QNetTcpServer::search_subcmd_node(u16 cmd_type,u32 sub_cmd_type)$/;"	function	line:519	class:QNetTcpServer	signature:(u16 cmd_type,u32 sub_cmd_type)
+WRITE	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^int QNetTcpServer::WRITE(int sk, char *buf, int len)$/;"	function	line:540	class:QNetTcpServer	signature:(int sk, char *buf, int len)
+READ	/Users/qianzhengyang/QNetProtocol/QNetTcpServer.cpp	/^int QNetTcpServer::READ(int sk, char *buf, int len)$/;"	function	line:577	class:QNetTcpServer	signature:(int sk, char *buf, int len)
+client	/Users/qianzhengyang/QNetProtocol/test_client.c	/^QNetClient *client;$/;"	variable	line:4
+file	/Users/qianzhengyang/QNetProtocol/test_client.c	/^FILE *file;$/;"	variable	line:5
+file_serial	/Users/qianzhengyang/QNetProtocol/test_client.c	/^int file_serial;$/;"	variable	line:6
+file_len	/Users/qianzhengyang/QNetProtocol/test_client.c	/^u32 file_len;$/;"	variable	line:7
+read_file_count	/Users/qianzhengyang/QNetProtocol/test_client.c	/^u32 read_file_count;$/;"	variable	line:8
+viewinfo	/Users/qianzhengyang/QNetProtocol/test_client.c	/^int viewinfo;$/;"	variable	line:9
+login_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void login_ack(char *data, u32 len)$/;"	function	line:10	signature:(char *data, u32 len)
+logout_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void logout_ack(char *data, u32 len)$/;"	function	line:23	signature:(char *data, u32 len)
+heart_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void heart_ack(char *data, u32 len)$/;"	function	line:31	signature:(char *data, u32 len)
+filelist_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void filelist_ack(char *data, u32 len)$/;"	function	line:35	signature:(char *data, u32 len)
+filesend_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void filesend_ack(char *data, u32 len)$/;"	function	line:41	signature:(char *data, u32 len)
+connect	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void connect()$/;"	function	line:74
+send_command	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void send_command(int index)$/;"	function	line:95	signature:(int index)
+filepath_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void filepath_ack(char *data, u32 len)$/;"	function	line:157	signature:(char *data, u32 len)
+filestart_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void filestart_ack(char *data, u32 len)$/;"	function	line:163	signature:(char *data, u32 len)
+set_read_file_menu	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void set_read_file_menu()$/;"	function	line:169
+read_file_menu	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void read_file_menu()$/;"	function	line:173
+vidstream_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void vidstream_ack(char *data,u32 len)$/;"	function	line:178	signature:(char *data,u32 len)
+main_menu	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void main_menu()$/;"	function	line:182
+close_socket	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void close_socket(int sig)$/;"	function	line:201	signature:(int sig)
+main	/Users/qianzhengyang/QNetProtocol/test_client.c	/^int main(int argc,char **argv)$/;"	function	line:208	signature:(int argc,char **argv)

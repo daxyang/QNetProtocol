@@ -46,6 +46,9 @@ QNetClient::QNetClient()
   set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_PATH,NULL);
   set_protocol_ack_callback(NET_TCP_TYPE_FILE,NET_FILE_LIST,NULL);
 
+  set_protocol_ack_callback(NET_TCP_TYPE_VID,NET_VID_CONNECT,NULL);
+  set_protocol_ack_callback(NET_TCP_TYPE_VID,NET_VID_STREAM,NULL);
+
 }
 QNetClient::~QNetClient()
 {
@@ -388,10 +391,31 @@ void QNetClient::do_file_protocol_process(u32 sub_cmd_type,char *data,u32 len)
 }
 void QNetClient::do_audio_protocol_process(u32 sub_cmd_type,char *data,u32 len)
 {
+  u32 pkg_len = NET_HEAD_SIZE + len;
+  char *buffer = (char *)malloc(sizeof(char) * pkg_len);
+  app_net_head_pkg_t *head = (app_net_head_pkg_t *)buffer;
+  if(len > 0)
+    memcpy(buffer+NET_HEAD_SIZE,data,len);
 
 }
 void QNetClient::do_video_protocol_process(u32 sub_cmd_type,char *data,u32 len)
 {
+  u32 pkg_len = NET_HEAD_SIZE + len;
+  char *buffer = (char *)malloc(sizeof(char) * pkg_len);
+  app_net_head_pkg_t *head = (app_net_head_pkg_t *)buffer;
+  if(len > 0)
+    memcpy(buffer+NET_HEAD_SIZE,data,len);
+  switch(sub_cmd_type)
+  {
+    case NET_VID_CONNECT:
+      HEAD_PKG(head,NET_TCP_TYPE_VID,NET_VID_CONNECT,0,pkg_len);
+      break;
+    case NET_VID_STREAM:
+      HEAD_PKG(head,NET_TCP_TYPE_VID,NET_VID_STREAM,0,pkg_len);
+      break;
+  }
+  send_sliding->write_data_to_buffer(pkg_len,buffer,frame);
+  free(buffer);
 
 }
 /*  添加五

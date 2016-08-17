@@ -1,0 +1,27 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+client	/Users/qianzhengyang/QNetProtocol/test_client.c	/^QNetClient *client;$/;"	variable	line:4
+file	/Users/qianzhengyang/QNetProtocol/test_client.c	/^FILE *file;$/;"	variable	line:5
+file_serial	/Users/qianzhengyang/QNetProtocol/test_client.c	/^int file_serial;$/;"	variable	line:6
+file_len	/Users/qianzhengyang/QNetProtocol/test_client.c	/^u32 file_len;$/;"	variable	line:7
+read_file_count	/Users/qianzhengyang/QNetProtocol/test_client.c	/^u32 read_file_count;$/;"	variable	line:8
+viewinfo	/Users/qianzhengyang/QNetProtocol/test_client.c	/^int viewinfo;$/;"	variable	line:9
+login_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void login_ack(char *data, u32 len)$/;"	function	line:10	signature:(char *data, u32 len)
+logout_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void logout_ack(char *data, u32 len)$/;"	function	line:23	signature:(char *data, u32 len)
+heart_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void heart_ack(char *data, u32 len)$/;"	function	line:31	signature:(char *data, u32 len)
+filelist_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void filelist_ack(char *data, u32 len)$/;"	function	line:35	signature:(char *data, u32 len)
+filesend_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void filesend_ack(char *data, u32 len)$/;"	function	line:41	signature:(char *data, u32 len)
+connect	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void connect()$/;"	function	line:74
+send_command	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void send_command(int index)$/;"	function	line:95	signature:(int index)
+filepath_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void filepath_ack(char *data, u32 len)$/;"	function	line:157	signature:(char *data, u32 len)
+filestart_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void filestart_ack(char *data, u32 len)$/;"	function	line:163	signature:(char *data, u32 len)
+set_read_file_menu	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void set_read_file_menu()$/;"	function	line:169
+read_file_menu	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void read_file_menu()$/;"	function	line:173
+vidstream_ack	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void vidstream_ack(char *data,u32 len)$/;"	function	line:178	signature:(char *data,u32 len)
+main_menu	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void main_menu()$/;"	function	line:182
+close_socket	/Users/qianzhengyang/QNetProtocol/test_client.c	/^void close_socket(int sig)$/;"	function	line:201	signature:(int sig)
+main	/Users/qianzhengyang/QNetProtocol/test_client.c	/^int main(int argc,char **argv)$/;"	function	line:208	signature:(int argc,char **argv)

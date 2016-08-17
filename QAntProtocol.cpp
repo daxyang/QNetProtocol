@@ -1,10 +1,12 @@
 #include "QAntProtocol.h"
-//QAntProtocol *QAntProtocol::pthis = NULL;
+#include "pthread.h"
 QAntProtocol::QAntProtocol()
 {
 
 }
-
+QAntProtocol::~QAntProtocol()
+{
+}
 QAntProtocol::QAntProtocol(QSlidingWindow *sliding)
 {
   frame = new _frame_info_t;
@@ -16,9 +18,6 @@ QAntProtocol::QAntProtocol(QSlidingWindow *sliding)
     send_sliding = sliding;
     //printf("send_sliding:%d,sliding:%d\n",send_sliding,sliding);
   }
-
-//  pthis = this;
-
 
 }
 
@@ -217,3 +216,94 @@ void QAntProtocol::file_send_ack(void *ptr)
   pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
   free(buffer);
 }
+//<add by antony 2016-8-15>
+//视频发送连接
+void QAntProtocol::vid_connect_ack(void *ptr)
+{
+  struct cmd_transmit_t *cmd_ptr = (struct cmd_transmit_t *)ptr;
+  QAntProtocol *pthis = (QAntProtocol *)cmd_ptr->ptr;  //类指针
+  char *data = (char *)cmd_ptr->data; //接受到协议内容(不含头)
+  u32 len = (u32)cmd_ptr->len; //按受到协议的长度
+  //<协议分析>
+  app_net_vid_connect *vid_connect = (app_net_vid_connect *)data;
+  pthis->stream_id = vid_connect->streamid;
+  printf("current get stream id:%d\n",pthis->stream_id);
+  //<!协议分析>
+  u32 pkg_len = NET_HEAD_SIZE + sizeof(app_net_vid_ack_connect);
+  char *buffer = (char *)malloc(sizeof(char) * pkg_len);
+  app_net_head_pkg_t *head = (app_net_head_pkg_t *)buffer;
+  //<返回值>
+  app_net_vid_ack_connect *vid_ack_connect = (app_net_vid_ack_connect *)(buffer+NET_HEAD_SIZE);
+  vid_ack_connect->stat = htons(1);
+  //<!返回值>
+  HEAD_PKG(head,NET_TCP_TYPE_VID,NET_VID_CONNECT,0,pkg_len);
+  pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
+  free(buffer);
+}
+//取码流协议
+void QAntProtocol::vid_stream_ack(void *ptr)
+{
+  struct cmd_transmit_t *cmd_ptr = (struct cmd_transmit_t *)ptr;
+  QAntProtocol *pthis = (QAntProtocol *)cmd_ptr->ptr;  //类指针
+  char *data = (char *)cmd_ptr->data; //接受到协议内容(不含头)
+  u32 len = (u32)cmd_ptr->len; //按受到协议的长度
+  //<协议分析>
+  //none
+  //<!协议分析>
+  pthis->start_send_stream();
+}
+void QAntProtocol::start_send_stream()
+{
+  pthread_attr_t attr;
+  pthread_attr_init (&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+  pthread_setcancelstate (PTHREAD_CANCEL_ENABLE, NULL); //异步取消
+  pthread_create(&stream_pthread_id,&attr,run_send_stream,this);
+  pthread_attr_destroy (&attr);
+}
+int QAntProtocol::send_stream_pthread_cancel()
+{
+   pthread_cancel(stream_pthread_id);
+   pthread_join(stream_pthread_id,NULL);
+}
+void *QAntProtocol::run_send_stream(void *ptr)
+{
+  QAntProtocol *pthis = (QAntProtocol *)ptr;
+
+  u32 len = NET_HEAD_SIZE + sizeof(app_net_vid_ack_stream);
+  char *buffer = (char *)malloc(sizeof(char) * len);
+  char *stream_data = (char *)malloc(sizeof(char) * 1024 *1024);
+  app_net_head_pkg_t *head = (app_net_head_pkg_t *)buffer;
+  app_net_vid_ack_stream *stream = (app_net_vid_ack_stream *)(buffer + NET_HEAD_SIZE);
+  init_stream_buf(pthis->stream_id);
+  //<add by Antony 2016-8-17>
+  pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL); //允许退出线程
+  pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL); //设置立即取消
+  //<!2016-8-17>
+  while(1)
+  {
+    //<返加值设置>
+    pthread_testcancel();
+    u32 stream_len;//码流长度
+    //stream_data = (char *)malloc(sizeof(char) * stream_len);
+    stream_len = get_stream(stream_data);
+
+    u32 pkg_len = len + stream_len;
+    char *stream_buffer = (char *)malloc(sizeof(char) * pkg_len);
+    memcpy(stream_buffer,buffer,len);
+    memcpy(stream_buffer + len , stream_data,stream_len);
+    head = (app_net_head_pkg_t *)stream_buffer;
+    //<!返回值设置>
+    HEAD_PKG(head,NET_TCP_TYPE_VID,NET_VID_STREAM,0,pkg_len);
+    pthis->send_sliding->write_data_to_buffer(pkg_len,stream_buffer,pthis->frame);
+    free(stream_buffer);
+    pthread_testcancel();
+
+  }
+  free(buffer);
+  free(stream_data);
+}
+
+
+
+//<!2016-8-15>

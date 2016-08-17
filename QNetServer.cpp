@@ -104,7 +104,7 @@ void QNetServer::start_sub_server(int sk)
 void *QNetServer::run_sub_server(void *ptr)
 {
   QNetTcpServer *tcp_server = new QNetTcpServer();
-  int new_client_socket = (int &)*ptr;
+  int new_client_socket = *(int *)ptr;
   if(tcp_server->login(new_client_socket) == 1)
   {
     printf("\033[31m**** Login OK sock:%d ****\033[0m\n",new_client_socket);

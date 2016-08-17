@@ -1,13 +1,14 @@
 TARGET=libQNetProtocol.so
 
 CC=g++
+#CC=arm-none-linux-gnueabi-g++
 
-INCLUDE =-I../QSlidingWindowConsume -I../QSlidingWindow
+INCLUDE =-I../QSlidingWindowConsume -I../QSlidingWindow -I../GetDVOStream
 
 .PHONY:clean
 
 libQNetProtocol.so:QNetClient.o QNetServer.o QNetTcpServer.o QAntProtocol.o
-	$(CC) -shared -fPIC -o libQNetProtocol.so QNetServer.o QNetClient.o QNetTcpServer.o  QAntProtocol.o -L/usr/local/lib -lQSlidingWindow -lQSlidingWindowConsume
+	$(CC) -shared -fPIC -o libQNetProtocol.so QNetServer.o QNetClient.o QNetTcpServer.o  QAntProtocol.o -L/usr/local/lib -lQSlidingWindow -lQSlidingWindowConsume -lGetDVOStream
 
 
 QNetTcpServer.o:QNetTcpServer.cpp QNetTcpServer.h net_protocol.h
