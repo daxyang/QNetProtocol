@@ -16,11 +16,10 @@ QAntProtocol::QAntProtocol(QSlidingWindow *sliding)
   else
   {
     send_sliding = sliding;
-    //printf("send_sliding:%d,sliding:%d\n",send_sliding,sliding);
+    pthread_mutex_init(&send_buff_mutex,NULL);
   }
-
 }
-
+//登出应答函数
 void QAntProtocol::ctrl_logout_ack(void *ptr)
 {
   struct cmd_transmit_t *cmd_ptr = (struct cmd_transmit_t *)ptr;
@@ -36,10 +35,13 @@ void QAntProtocol::ctrl_logout_ack(void *ptr)
   ack_logout->state = htons(1);
   HEAD_PKG(head,NET_TCP_TYPE_CTRL,NET_CTRL_LOGOUT,0,pkg_len);
   //<!server ack>
+  pthread_mutex_lock(&pthis->send_buff_mutex);
   pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
+  pthread_mutex_unlock(&pthis->send_buff_mutex);
   printf("logout");
   free(buffer);
 }
+//心跳应答函数
 void QAntProtocol::ctrl_heart_ack(void *ptr)
 {
   struct cmd_transmit_t *cmd_ptr = (struct cmd_transmit_t *)ptr;
@@ -57,14 +59,16 @@ void QAntProtocol::ctrl_heart_ack(void *ptr)
 
   heart_ack->state = 1;
   HEAD_PKG(head,NET_TCP_TYPE_CTRL,NET_CTRL_HEART,0,pkg_len);
+  pthread_mutex_lock(&pthis->send_buff_mutex);
   pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
+  pthread_mutex_unlock(&pthis->send_buff_mutex);
   free(buffer);
 }
 
 
 void QAntProtocol::file_name_ack(void *ptr)
 {}
-
+//文件列表应答函数
 void QAntProtocol::file_list_ack(void *ptr)
 {
   struct cmd_transmit_t *cmd_ptr = (struct cmd_transmit_t *)ptr;
@@ -100,13 +104,17 @@ void QAntProtocol::file_list_ack(void *ptr)
       if(list_ack->file_number >= 20)
       {
         HEAD_PKG(head,NET_TCP_TYPE_FILE,NET_FILE_LIST,0,pkg_len);
+        pthread_mutex_lock(&pthis->send_buff_mutex);
         pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
+        pthread_mutex_unlock(&pthis->send_buff_mutex);
         list_ack->file_number = 0;
       }
 
     }
     HEAD_PKG(head,NET_TCP_TYPE_FILE,NET_FILE_LIST,0,pkg_len);
+    pthread_mutex_lock(&pthis->send_buff_mutex);
     pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
+    pthread_mutex_unlock(&pthis->send_buff_mutex);
     closedir(dir);
   }
 
@@ -115,6 +123,7 @@ void QAntProtocol::file_list_ack(void *ptr)
   //pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
   free(buffer);
 }
+//文件发送开始应答函数
 void QAntProtocol::file_start_ack(void *ptr)
 {
   struct cmd_transmit_t *cmd_ptr = (struct cmd_transmit_t *)ptr;
@@ -152,10 +161,13 @@ void QAntProtocol::file_start_ack(void *ptr)
   filestart_ack->file_len = htonl(size);
   //<=
   HEAD_PKG(head,NET_TCP_TYPE_FILE,NET_FILE_START,0,pkg_len);
+  pthread_mutex_lock(&pthis->send_buff_mutex);
   pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
+  pthread_mutex_unlock(&pthis->send_buff_mutex);
   free(full_file_name);
   free(buffer);
 }
+//文件路径应答函数
 void QAntProtocol::file_path_ack(void *ptr)
 {
   struct cmd_transmit_t *cmd_ptr = (struct cmd_transmit_t *)ptr;
@@ -182,10 +194,13 @@ void QAntProtocol::file_path_ack(void *ptr)
   }
   //<--
   HEAD_PKG(head,NET_TCP_TYPE_FILE,NET_FILE_PATH,0,pkg_len);
+  pthread_mutex_lock(&pthis->send_buff_mutex);
   pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
+  pthread_mutex_unlock(&pthis->send_buff_mutex);
   free(buffer);
 
 }
+//文件发送应答函灵敏
 void QAntProtocol::file_send_ack(void *ptr)
 {
   struct cmd_transmit_t *cmd_ptr = (struct cmd_transmit_t *)ptr;
@@ -213,7 +228,9 @@ void QAntProtocol::file_send_ack(void *ptr)
   }
   //<--
   HEAD_PKG(head,NET_TCP_TYPE_FILE,NET_FILE_SEND,0,pkg_len);
+  pthread_mutex_lock(&pthis->send_buff_mutex);
   pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
+  pthread_mutex_unlock(&pthis->send_buff_mutex);
   free(buffer);
 }
 //<add by antony 2016-8-15>
@@ -237,21 +254,27 @@ void QAntProtocol::vid_connect_ack(void *ptr)
   vid_ack_connect->stat = htons(1);
   //<!返回值>
   HEAD_PKG(head,NET_TCP_TYPE_VID,NET_VID_CONNECT,0,pkg_len);
+  pthread_mutex_lock(&pthis->send_buff_mutex);
   pthis->send_sliding->write_data_to_buffer(pkg_len,buffer,pthis->frame);
+  pthread_mutex_unlock(&pthis->send_buff_mutex);
   free(buffer);
 }
-//取码流协议
+//取码流协议－接收到取码流的命令
 void QAntProtocol::vid_stream_ack(void *ptr)
 {
   struct cmd_transmit_t *cmd_ptr = (struct cmd_transmit_t *)ptr;
   QAntProtocol *pthis = (QAntProtocol *)cmd_ptr->ptr;  //类指针
   char *data = (char *)cmd_ptr->data; //接受到协议内容(不含头)
   u32 len = (u32)cmd_ptr->len; //按受到协议的长度
+  pthis->get_dvo_stream = new QGetDVOStream();
   //<协议分析>
   //none
   //<!协议分析>
   pthis->start_send_stream();
 }
+/*
+ * 启动码流发送线程
+ */
 void QAntProtocol::start_send_stream()
 {
   pthread_attr_t attr;
@@ -266,6 +289,9 @@ int QAntProtocol::send_stream_pthread_cancel()
    pthread_cancel(stream_pthread_id);
    pthread_join(stream_pthread_id,NULL);
 }
+/*
+ * 发送码流的线程
+ */
 void *QAntProtocol::run_send_stream(void *ptr)
 {
   QAntProtocol *pthis = (QAntProtocol *)ptr;
@@ -275,19 +301,30 @@ void *QAntProtocol::run_send_stream(void *ptr)
   char *stream_data = (char *)malloc(sizeof(char) * 1024 *1024);
   app_net_head_pkg_t *head = (app_net_head_pkg_t *)buffer;
   app_net_vid_ack_stream *stream = (app_net_vid_ack_stream *)(buffer + NET_HEAD_SIZE);
-  init_stream_buf(pthis->stream_id);
+  //init_stream_buf(pthis->stream_id);
+  pthis->get_dvo_stream->init_stream_buf(pthis->stream_id);
   //<add by Antony 2016-8-17>
   pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL); //允许退出线程
   pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL); //设置立即取消
   //<!2016-8-17>
+  stream_rtsp_info_t *stream_info = new stream_rtsp_info_t();
   while(1)
   {
     //<返加值设置>
     pthread_testcancel();
     u32 stream_len;//码流长度
     //stream_data = (char *)malloc(sizeof(char) * stream_len);
-    stream_len = get_stream(stream_data);
+    //stream_len = get_stream(stream_data,stream_info);
+    stream_len = pthis->get_dvo_stream->get_stream(stream_data,stream_info);
 
+    stream->stream_id = htonl(0);
+    stream->frame_type = htonl(stream_info->frame_type);
+    stream->frame_number = htonl(0);
+    stream->sec = htons(0);
+    stream->usec = htons(0);
+    stream->pts = htonl(0);
+
+    //printf("frame type:%d\n",stream_info->frame_type);
     u32 pkg_len = len + stream_len;
     char *stream_buffer = (char *)malloc(sizeof(char) * pkg_len);
     memcpy(stream_buffer,buffer,len);
@@ -295,15 +332,25 @@ void *QAntProtocol::run_send_stream(void *ptr)
     head = (app_net_head_pkg_t *)stream_buffer;
     //<!返回值设置>
     HEAD_PKG(head,NET_TCP_TYPE_VID,NET_VID_STREAM,0,pkg_len);
+    pthread_mutex_lock(&pthis->send_buff_mutex);
     pthis->send_sliding->write_data_to_buffer(pkg_len,stream_buffer,pthis->frame);
+    pthread_mutex_unlock(&pthis->send_buff_mutex);
     free(stream_buffer);
     pthread_testcancel();
+    // #if defined(Q_OS_WIN32)
+    //           usleep(1000);
+    // #elif defined(Q_OS_MACX)
+    //           pthread_yield_np();
+    // #elif defined(Q_OS_UNIX)
+    //         //  usleep(5000);
+    //           pthread_yield();
+    // #endif
 
   }
+  //<add by Antony 2016-8-19>
+  //printf("send stream pthread quit\n");
+  //<!2016-8-19>
   free(buffer);
   free(stream_data);
+  free(stream_info);
 }
-
-
-
-//<!2016-8-15>

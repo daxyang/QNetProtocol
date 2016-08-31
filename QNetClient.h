@@ -4,9 +4,9 @@
 #include "QSlidingWindow.h"
 #include "QSlidingWindowConsume.h"
 #include "pthread.h"
-#define PROTOCOL_BUFFER_LEN (2 * 1024 * 1024)
-#define SEND_USER 1
-#define RECV_USER 2
+#define PROTOCOL_BUFFER_LEN (8 * 1024 * 1024)
+#define SEND_USER 21
+#define RECV_USER 22
 //命令链表结构体
 struct sub_cmd_link_t
 {
@@ -36,8 +36,7 @@ public:
   void main_cmd_process(u16 cmd_type,u32 sub_cmd_type,char *data,u32 len);
 
   void start();
-  void close_client();
-  void (*reply)(int sig);
+  void (*client_close)(int sig);
   int quit;
 private:
   /*  Send_Window（发送缓冲区):

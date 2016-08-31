@@ -6,14 +6,14 @@
 #include "dirent.h"
 #include "sys/stat.h"
 #include "sys/shm.h"
-#include "GetDVOStream.h"
+//#include "GetDVOStream.h"
+#include "QGetDVOStream.h"
 struct cmd_transmit_t
 {
     void *ptr;
     char *data;
     u32 len;
 };
-
 
 class QAntProtocol
 {
@@ -44,8 +44,6 @@ protected:
 private:
   static void *run_send_stream(void *ptr);
   void start_send_stream();
-
-
 //<!2016-8-15>
 
 private:
@@ -59,6 +57,8 @@ private:
   int stream_id;
   //<!2016-8-17>
 
+  QGetDVOStream *get_dvo_stream;
+  pthread_mutex_t send_buff_mutex;
 
 };
 #endif

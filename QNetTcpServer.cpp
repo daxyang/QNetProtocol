@@ -223,7 +223,6 @@ void *QNetTcpServer::run_cmd_process(void *ptr)
       //将数据进行分析(不含头)
       pthis->do_cmd_process(cmd_type,cmd_sub_type,pkg_len,buffer+NET_HEAD_SIZE);
     }
-    // usleep(10000);
     // #if defined(Q_OS_WIN32)
     //   usleep(1000);
     // #elif defined(Q_OS_MACX)
@@ -332,12 +331,19 @@ void *QNetTcpServer::run_send_cmd(void *ptr)
   while(pthis->quit == 0)
   {
       //从发送缓冲区中读取命令进行发送
-    int len = pthis->consume_send->read_data_to_buffer(buffer,0);  //使用非阻塞模式，可以使该线程在quit=1时退出
+    //int len = pthis->consume_send->read_data_to_buffer(buffer,1);  //使用非阻塞模式，可以使该线程在quit=1时退出
+    int len = pthis->consume_send->read_data_to_buffer(buffer,0);
     if(len > 0)
     {
       pthis->WRITE(pthis->socket,buffer,len);
           //printf("send len:%d\n", len);
     }
+    //<add by Antony 2016-8-25>
+    else if(len < 0)
+    {
+      pthis->consume_send->read_init();
+    }
+    //<!2016-8-25>
     //usleep(10000);
     // #if defined(Q_OS_WIN32)
     //   usleep(1000);
@@ -587,8 +593,13 @@ int QNetTcpServer::WRITE(int sk, char *buf, int len)
     int ret = select(sk + 1,NULL,&wset,NULL,&tv);
     if(ret <= 0)
     {
+      void *status;
       printf("select write over timer! %d\n",sk);
-      pthread_cancel(ant_protocol->stream_pthread_id);
+      //<modify by Antony 2016-8-18>
+      //pthread_cancel(ant_protocol->stream_pthread_id);
+      //pthread_join(ant_protocol->stream_pthread_id,&status);
+      //pthread_kill(ant_protocol->stream_pthread_id,SIGQUIT);
+      //<!2016-8-18>
       quit = 1;
       usleep(500000);
       return -1;
@@ -625,9 +636,14 @@ int QNetTcpServer::READ(int sk, char *buf, int len)
     int ret = select(sk + 1,&rset,NULL,NULL,&tv);
     if(ret <= 0)
     {
+      void *status;
       printf("select recv over timer! %d\n",sk);
       quit = 1;
-      pthread_cancel(ant_protocol->stream_pthread_id);
+      //<modify by Antony 2016-8-18>
+      //pthread_cancel(ant_protocol->stream_pthread_id);
+      //pthread_join(ant_protocol->stream_pthread_id,&status);
+      //pthread_kill(ant_protocol->stream_pthread_id,SIGQUIT);
+      //<!2016-8-18>
       usleep(500000);
       close(sk);
       return -1;

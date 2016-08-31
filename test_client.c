@@ -213,7 +213,8 @@ void close_socket(int sig)
 {
     client->quit = 1;
     printf("\033[31mClose client\033[0\n");
-    free(client);
+    //free(client);
+    delete client;
     exit(0);
 }
 int main(int argc,char **argv)

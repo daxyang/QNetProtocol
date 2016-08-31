@@ -475,7 +475,7 @@ void *QNetClient::run_send_pthread(void *ptr)
         char *buffer = (char *)malloc(sizeof(char) * len);
         app_net_ctrl_heart *heart = (app_net_ctrl_heart *)buffer;
         heart->yy = htons(1900+ptime->tm_year);
-        heart->MM = ptime->tm_mon;
+        heart->MM = ptime->tm_mon + 1;
         heart->dd = ptime->tm_mday;
         heart->hh = ptime->tm_hour;
         heart->mm = ptime->tm_min;
@@ -486,14 +486,14 @@ void *QNetClient::run_send_pthread(void *ptr)
     }
 
   }
-  // #if defined(Q_OS_WIN32)
-  //         usleep(1000);
-  // #elif defined(Q_OS_MACX)
-  //         pthread_yield_np();
-  // #elif defined(Q_OS_UNIX)
-  //       //  usleep(5000);
-  //         pthread_yield();
-  // #endif
+  #if defined(Q_OS_WIN32)
+          usleep(1000);
+  #elif defined(Q_OS_MACX)
+          pthread_yield_np();
+  #elif defined(Q_OS_UNIX)
+        //  usleep(5000);
+          pthread_yield();
+  #endif
   }
   free(buffer);
 }
@@ -584,14 +584,11 @@ void QNetClient::treasmit_pthread_start()
 
 void QNetClient::start()
 {
-  signal(SIGPIPE,reply);
+  signal(SIGPIPE,client_close);
   quit = 0;
-
   treasmit_pthread_start();
   send_pthread_start();
   recv_pthread_start();
-
-
 }
 /*
  * 网络处理函数 发送和接受
@@ -645,8 +642,4 @@ int QNetClient::READ(int sk, char *buf, int len)
   }
 
   return 0;
-}
-void QNetClient::close_client()
-{
-  shutdown(client_socket,SHUT_RDWR);
 }

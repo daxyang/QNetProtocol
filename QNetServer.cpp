@@ -112,6 +112,20 @@ void *QNetServer::run_sub_server(void *ptr)
     while (tcp_server->quit == 0) {
       usleep(500000);
     }
+    //<add by Antony 2016-8-25>
+    #if __WIN32
+    if(tcp_server->ant_protocol->stream_pthread_id != NULL)
+    #else
+    if(tcp_server->ant_protocol->stream_pthread_id != 0)
+    #endif
+    //<!2016-8-25>
+    {
+      void *status;
+      pthread_cancel(tcp_server->ant_protocol->stream_pthread_id);
+      pthread_join(tcp_server->ant_protocol->stream_pthread_id,&status);
+      printf("ant_protocol stream pthread quit\n");
+    }
+    usleep(500000);
     close(new_client_socket);
     printf("free sock:%d\n",new_client_socket);
     delete tcp_server;

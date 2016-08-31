@@ -216,8 +216,8 @@ typedef struct
 //server
 typedef struct
 {
-  u16 stream_id;
-  u16 frame_type;
+  u32 stream_id;
+  u32 frame_type;
   u32 frame_number;
   u16 sec;
   u16 usec;

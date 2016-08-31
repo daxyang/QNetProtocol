@@ -7,9 +7,9 @@
 #include "QAntProtocol.h"
 #include "pthread.h"
 
-#define SEND_USER  1
+#define SEND_USER  3
 #define RECV_USER  2
-#define CMD_BUFFER_LEN  (2*1024*1024)
+#define CMD_BUFFER_LEN  (8*1024*1024)
 
 //命令链表结构体
 struct sub_cmd_link_t
@@ -39,6 +39,7 @@ public:
   int login(int sk);
   void server_start(int sk);
   int quit;
+  QAntProtocol *ant_protocol;
 protected:
 
 
@@ -78,7 +79,7 @@ private:
   struct sub_cmd_link_t *search_subcmd_node(u16 cmd_type,u32 sub_cmd_type);//搜索子节点
   struct cmd_link_t *head_cmd_link;//主节点的头
 
-  QAntProtocol *ant_protocol;
+  //QAntProtocol *ant_protocol;
 
   int WRITE(int sk, char *buf, int len);
   int READ(int sk, char *buf, int len);
